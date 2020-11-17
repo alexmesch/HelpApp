@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">HelpApp</string>
+    <string name="logo_icon_description">logo_icon</string>
+    <string name="logo_mss_description">logo_mss</string>
+    <string name="background_rectangle_description">background_rectangle</string>
+    <string name="category_image_description">category_image</string>
+    <string name="category_title_description">category_title</string>
+    <string name="loading_text">Загрузка</string>
+    <string name="help_title">Помочь</string>
+    <string name="search_button_undertext">Поиск</string>
+    <string name="news_button_undertext">Новости</string>
+    <string name="history_button_undertext">История</string>
+    <string name="profile_button_undertext">Профиль</string>
+    <string name="category_choice_title">Выберите категорию помощи</string>
 </resources>
