@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/pfd_photo_btn"
+        android:drawableStart="@drawable/pfd_upload_icon"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:textAllCaps="false"
+        android:text="@string/pfd_photo_btn_title" />
+
+    <Button
+        android:id="@+id/pfd_make_photo_btn"
+        android:drawableStart="@drawable/pfd_photo_icon"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:textAllCaps="false"
+        android:text="@string/pfd_make_photo_btn_title" />
+
+    <Button
+        android:id="@+id/pfd_delete_btn"
+        android:textAllCaps="false"
+        android:drawableStart="@drawable/pfd_delete_icon"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="@string/pfd_delete_btn_title" />
+</LinearLayout>

@@ -7,9 +7,22 @@
     <string name="category_title_description">category_title</string>
     <string name="loading_text">Загрузка</string>
     <string name="help_title">Помочь</string>
-    <string name="search_button_undertext">Поиск</string>
-    <string name="news_button_undertext">Новости</string>
-    <string name="history_button_undertext">История</string>
-    <string name="profile_button_undertext">Профиль</string>
+    <string name="search_text">Поиск</string>
+    <string name="news_text">Новости</string>
+    <string name="history_text">История</string>
+    <string name="profile_text">Профиль</string>
     <string name="category_choice_title">Выберите категорию помощи</string>
+    <string name="pf_exit_account">Выйти из аккаунта</string>
+    <string name="pf_receive_push_notifications">Получать push-уведомления</string>
+    <string name="pf_occupation">Сфера деятельности</string>
+    <string name="pf_birthday">Дата рождения</string>
+    <string name="pf_friends_title">Ваши друзья</string>
+    <string name="sf_tab_title_events">По мероприятиям</string>
+    <string name="sf_tab_title_NKO">По НКО</string>
+    <string name="sf_search_hint">Введите название организации</string>
+    <string name="sf_keywords_text">Ключевые слова: </string>
+    <string name="sf_search_results_text">Результаты поиска: </string>
+    <string name="pfd_photo_btn_title">Выбрать фото</string>
+    <string name="pfd_make_photo_btn_title">Сделать снимок</string>
+    <string name="pfd_delete_btn_title">Удалить</string>
 </resources>

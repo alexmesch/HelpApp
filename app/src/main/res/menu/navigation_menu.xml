@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/news_button"
+        android:enabled="true"
+        android:icon="@drawable/news_button_icon"
+        android:title="@string/news_text"/>
+    <item
+        android:id="@+id/search_button"
+        android:enabled="true"
+        android:icon="@drawable/search_button_icon"
+        android:title="@string/search_text"/>
+
+    <item
+        android:id="@+id/help_ghost_button"
+        android:enabled="true"
+        android:title="@string/help_title" />
+
+    <item
+        android:id="@+id/history_button"
+        android:enabled="true"
+        android:icon="@drawable/history_button_icon"
+        android:title="@string/history_text"/>
+    <item
+        android:id="@+id/profile_button"
+        android:enabled="true"
+        android:icon="@drawable/profile_button_icon"
+        android:title="@string/profile_text"/>
+</menu>
