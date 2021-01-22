@@ -25,4 +25,7 @@
     <string name="pfd_photo_btn_title">Выбрать фото</string>
     <string name="pfd_make_photo_btn_title">Сделать снимок</string>
     <string name="pfd_delete_btn_title">Удалить</string>
+    <string name="pf_occupation_placeholder">Врач</string>
+    <string name="pf_profileName_placeholder">Константинов Денис</string>
+    <string name="pf_birthday_placeholder">01 января 0001</string>
 </resources>

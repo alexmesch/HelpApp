@@ -5,16 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.msch.helpapp.R
-import com.msch.helpapp.adapters.CategoryViewAdapter
 import com.msch.helpapp.adapters.FriendsAdapter
-import com.msch.helpapp.data.DataSource
 import com.msch.helpapp.data.FriendsSource
-import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.android.synthetic.main.fragment_profile_screen.view.*
 
 class ProfileFragment : Fragment() {
@@ -37,10 +32,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val profilePic = view.findViewById(R.id.pf_profile_image) as ImageView
-        profilePic.setOnClickListener(this::openDialog)
-
+        view.pf_profile_image.setOnClickListener(this::openDialog)
     }
 
     private fun openDialog(view: View) {

@@ -8,7 +8,7 @@ import com.msch.helpapp.R
 import com.msch.helpapp.models.SearchInfo
 import kotlinx.android.synthetic.main.sf_ve_recycler_item.view.*
 
-class SearchEventsRecycler: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchEventsAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var searchItems: List<SearchInfo> = ArrayList()
 

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.msch.helpapp.R
 import com.msch.helpapp.adapters.SearchPagerAdapter
 import kotlinx.android.synthetic.main.fragment_search_screen.*
@@ -16,8 +15,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_search_screen,container,false)
-        return view
+        return inflater.inflate(R.layout.fragment_search_screen,container,false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,8 +25,8 @@ class SearchFragment : Fragment() {
 
     private fun setUpTabs() {
         val searchPageAdapter = SearchPagerAdapter(childFragmentManager)
-        searchPageAdapter.addFragment(EventsSearchPage(), "По мероприятиям")
-        searchPageAdapter.addFragment(NKOSearchPage(), "По НКО")
+        searchPageAdapter.addFragment(EventsSearchFragment(), getString(R.string.sf_tab_title_events))
+        searchPageAdapter.addFragment(NKOSearchFragment(), getString(R.string.sf_tab_title_NKO))
         sf_viewPager.adapter = searchPageAdapter
         sf_tabs.setupWithViewPager(sf_viewPager)
     }

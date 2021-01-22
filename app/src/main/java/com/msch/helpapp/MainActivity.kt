@@ -2,7 +2,6 @@ package com.msch.helpapp
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -28,23 +27,12 @@ class MainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.news_button -> {
-                openFragment(HelpFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.search_button -> {
-                openFragment(SearchFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.history_button -> {
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.profile_button -> {
-                openFragment(ProfileFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
+            R.id.news_button -> openFragment(HelpFragment())
+            R.id.search_button -> openFragment(SearchFragment())
+            R.id.profile_button -> openFragment(ProfileFragment())
+            R.id.history_button -> {}
+            else -> null
+        } != null
     }
 
     private fun openFragment(fragment: Fragment) {

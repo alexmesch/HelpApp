@@ -6,17 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.msch.helpapp.R
-import com.msch.helpapp.adapters.CategoryViewAdapter
-import com.msch.helpapp.adapters.SearchEventsRecycler
-import com.msch.helpapp.data.DataSource
+import com.msch.helpapp.adapters.SearchEventsAdapter
 import com.msch.helpapp.data.SearchSource
-import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.android.synthetic.main.sf_viewpager_events_fragment.view.*
 
-class EventsSearchPage: Fragment() {
+class EventsSearchFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,7 +20,7 @@ class EventsSearchPage: Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.sf_viewpager_events_fragment, container, false)
-        val searchAdapter = SearchEventsRecycler()
+        val searchAdapter = SearchEventsAdapter()
         val data = SearchSource.createSearchData()
 
         view.sf_ve_recycler.layoutManager = LinearLayoutManager(requireActivity())

@@ -10,5 +10,4 @@ data class ProfileInfo(
     var profileOccupation: String,
     var profileNotifications: Boolean,
     var profileFriends: ArrayList<String>
-) {
-}
+)

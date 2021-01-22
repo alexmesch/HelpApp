@@ -10,7 +10,7 @@ class PFDialog: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            val inflater = requireActivity().layoutInflater
+            val inflater = it.layoutInflater
 
             builder.setView(inflater.inflate(R.layout.pf_dialog,null))
             builder.create()
