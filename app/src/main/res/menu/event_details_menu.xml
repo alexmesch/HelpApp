@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ed_icon_clothes"
+        android:enabled="true"
+        android:icon="@drawable/ed_icon_clothes"
+        android:title="@string/ed_clothes_title"/>
+    <item
+        android:id="@+id/ed_icon_volunteer"
+        android:enabled="true"
+        android:icon="@drawable/ed_icon_volunteer"
+        android:title="@string/ed_volunteer_title" />
+
+    <item
+        android:id="@+id/ed_icon_prof_help"
+        android:enabled="true"
+        android:icon="@drawable/ed_icon_prof_help"
+        android:title="@string/ed_prof_help_title" />
+
+    <item
+        android:id="@+id/ed_icon_money"
+        android:enabled="true"
+        android:icon="@drawable/ed_icon_money"
+        android:title="@string/ed_money_title"/>
+</menu>
