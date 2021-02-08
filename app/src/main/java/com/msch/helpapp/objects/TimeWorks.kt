@@ -15,10 +15,10 @@ object TimeWorks {
         val estimatedTime = Period(currentDate, eventDate, PeriodType.days())
         if (estimatedTime.days >= 0) {
             return ("Осталось ${estimatedTime.days} дней (${eventDate.get(DateTimeFieldType.dayOfMonth())}" +
-                    ".${eventDate.get(DateTimeFieldType.monthOfYear())})")
-        }
-        else {
-            return "Мероприятие завершено"
+                    ".${eventDate.get(DateTimeFieldType.monthOfYear())}" + ".${eventDate.get(DateTimeFieldType.year())})")
+        } else {
+            return ("Мероприятие завершено" + "(${eventDate.get(DateTimeFieldType.dayOfMonth())}" +
+                    ".${eventDate.get(DateTimeFieldType.monthOfYear())}" + ".${eventDate.get(DateTimeFieldType.year())})")
         }
     }
 }
