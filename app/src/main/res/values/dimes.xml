@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="logo_icon_coordX">58dp</dimen>
+    <dimen name="logo_icon_coordY">178dp</dimen>
+    <dimen name="logo_icon_width">245dp</dimen>
+    <dimen name="logo_icon_height">73dp</dimen>
+
+    <dimen name="logo_mss_width">116dp</dimen>
+    <dimen name="logo_mss_height">16dp</dimen>
+    <dimen name="logo_mss_coordX">122dp</dimen>
+    <dimen name="logo_mss_coordY">536dp</dimen>
+
+    <dimen name="progress_bar_size">38dp</dimen>
+    <dimen name="progress_bar_coordX">161dp</dimen>
+    <dimen name="progress_bar_coordY">334dp</dimen>
+
+    <dimen name="loading_text_height">20dp</dimen>
+    <dimen name="loading_text_width">68dp</dimen>
+    <dimen name="loading_text_coordX">146dp</dimen>
+    <dimen name="loading_text_coordY">392dp</dimen>
+
+    <dimen name="ed_global_horizontal_padding">20dp</dimen>
+</resources>
