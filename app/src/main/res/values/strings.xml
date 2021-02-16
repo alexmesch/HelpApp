@@ -28,4 +28,40 @@
     <string name="pf_occupation_placeholder">Врач</string>
     <string name="pf_profileName_placeholder">Константинов Денис</string>
     <string name="pf_birthday_placeholder">01 января 0001</string>
+    <string name="nf_title">Новости</string>
+    <string name="nfi_event_title_placeholder">Название мероприятия</string>
+    <string name="nfi_time_left_placeholder">Осталось 13 дней (21.09 – 20.10)</string>
+    <string name="nfi_event_description_placeholder">Дубовская школа-интернат для детей
+    с ограниченными возможностями здоровья стала первой в области …</string>
+    <string name="event_details_title_placeholder">Спонсоры отремонтируют школу интернат</string>
+    <string name="ed_clothes_title">Помочь вещами</string>
+    <string name="ed_volunteer_title">Стать волонтером</string>
+    <string name="ed_prof_help_title">Проф. помощь</string>
+    <string name="ed_money_title">Помочь деньгами</string>
+    <string name="ed_subtitle_placeholder">Подзаголовок</string>
+    <string name="ed_estimated_time_placeholder">Осталось времени</string>
+    <string name="ed_organizer_placeholder">Организатор</string>
+    <string name="ed_location_placeholder">Расположение</string>
+    <string name="ed_phones_placeholder">+79999999999</string>
+    <string name="ed_mail">У вас есть вопросы? Напишите нам</string>
+    <string name="ed_description_placeholder">ОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписание
+    ОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписание
+    ОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписание</string>
+    <plurals name="days_plurals">
+        <item quantity="zero">дней</item>
+        <item quantity="one">день</item>
+        <item quantity="two">дня</item>
+        <item quantity="few">дня</item>
+        <item quantity="many">дней</item>
+        <item quantity="other">дней</item>
+    </plurals>
+    <plurals name="days_left_plurals">
+        <item quantity="zero">Осталось</item>
+        <item quantity="one">Остался</item>
+        <item quantity="two">Осталось</item>
+        <item quantity="few">Осталось</item>
+        <item quantity="many">Осталось</item>
+        <item quantity="other">Осталось</item>
+    </plurals>
+    <string name="nf_event_finished">Мероприятие завершено</string>
 </resources>
