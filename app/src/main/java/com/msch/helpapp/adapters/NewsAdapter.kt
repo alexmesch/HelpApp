@@ -5,13 +5,10 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.msch.helpapp.EventDetailsActivity
 import com.msch.helpapp.R
 import com.msch.helpapp.models.EventDetails
-import com.msch.helpapp.models.NewsItem
 import com.msch.helpapp.objects.TimeWorks.calculateEstimatedTime
 import kotlinx.android.synthetic.main.nf_recycler_item.view.*
 
@@ -36,7 +33,7 @@ class NewsAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             eventTitle.text = newsItem.eventName
             eventPic.setImageResource(context.resources.getIdentifier(newsItem.eventMainImage,"drawable",context.packageName))
             eventDesc.text = newsItem.eventDescription
-            eventTime.text = calculateEstimatedTime(newsItem.eventDate)
+            eventTime.text = calculateEstimatedTime(newsItem.eventDate, context)
         }
     }
 

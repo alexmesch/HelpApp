@@ -23,7 +23,6 @@ class CategoryViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         init {
             itemView.setOnClickListener() {
-                //Понятия не имею почему это работает!
                 val newsFragment: Fragment = NewsFragment()
                 val passInfo: Bundle = Bundle()
                 val fragmentManager = (itemView.context as AppCompatActivity).supportFragmentManager

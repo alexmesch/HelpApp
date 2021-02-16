@@ -33,7 +33,7 @@ class EventDetailsActivity: AppCompatActivity() {
 
         eventTitle.text = eventInfo[eventPosition].eventName
         eventSubtitle.text = eventTitle.text
-        eventDate.text = calculateEstimatedTime(eventInfo[eventPosition].eventDate)
+        eventDate.text = calculateEstimatedTime(eventInfo[eventPosition].eventDate, applicationContext)
         eventOrganizer.text = eventInfo[eventPosition].eventOrganizer
         eventLocation.text = eventInfo[eventPosition].eventLocation
         eventPhones.text = eventInfo[eventPosition].eventContacts

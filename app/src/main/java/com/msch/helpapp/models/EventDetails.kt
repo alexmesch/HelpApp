@@ -1,7 +1,5 @@
 package com.msch.helpapp.models
 
-import java.util.*
-
 data class EventDetails(
         var eventId: String,
         var eventCategory: String,

@@ -13,13 +13,14 @@ import com.msch.helpapp.objects.JsonParser.openFile
 import com.msch.helpapp.objects.JsonParser.parseCategoriesJson
 
 class HelpFragment : Fragment() {
+    private val CATEGORIES ="categories"
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fileContent: String = openFile(activity?.assets!!.open("categories"))
+        val fileContent: String = openFile(requireActivity().assets.open(CATEGORIES))
         val categoriesData = parseCategoriesJson(fileContent)
 
         val view = inflater.inflate(R.layout.fragment_help_screen, container, false)

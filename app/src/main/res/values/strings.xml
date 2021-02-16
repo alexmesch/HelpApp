@@ -47,4 +47,21 @@
     <string name="ed_description_placeholder">ОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписание
     ОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписание
     ОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписание</string>
+    <plurals name="days_plurals">
+        <item quantity="zero">дней</item>
+        <item quantity="one">день</item>
+        <item quantity="two">дня</item>
+        <item quantity="few">дня</item>
+        <item quantity="many">дней</item>
+        <item quantity="other">дней</item>
+    </plurals>
+    <plurals name="days_left_plurals">
+        <item quantity="zero">Осталось</item>
+        <item quantity="one">Остался</item>
+        <item quantity="two">Осталось</item>
+        <item quantity="few">Осталось</item>
+        <item quantity="many">Осталось</item>
+        <item quantity="other">Осталось</item>
+    </plurals>
+    <string name="nf_event_finished">Мероприятие завершено</string>
 </resources>
