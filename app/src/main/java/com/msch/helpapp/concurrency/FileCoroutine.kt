@@ -12,7 +12,7 @@ object FileCoroutine {
         return JsonParser.parseJson(fileContent, listType)
     }
 
-    private fun logThread(method: String) {
+    fun logThread(method: String) {
         println("debug: ${method}: ${Thread.currentThread().name}")
     }
 }
