@@ -15,25 +15,31 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import com.msch.helpapp.concurrency.FileCoroutine.fileWorksThread
+import com.msch.helpapp.concurrency.FileCoroutine.logThread
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.async
 
 class HelpFragment : Fragment() {
-    private val CATEGORIES ="categories"
-    val listType = object : TypeToken<List<CategoryItems>>(){}.type
+    private val CATEGORIES = "categories"
+    val listType = object : TypeToken<List<CategoryItems>>() {}.type
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_help_screen, container, false)
         val categoryAdapter = CategoryViewAdapter()
+        var data: List<CategoryItems> = ArrayList()
 
-        view.recycler_view.layoutManager = GridLayoutManager(requireActivity(), 2)
-        view.recycler_view.adapter = categoryAdapter
-
-        //Есть следуюющие CoroutineScopes: IO, Main и Default
-        CoroutineScope(IO).launch{
-            categoryAdapter.submitList(fileWorksThread(requireActivity(), listType, CATEGORIES).filterIsInstance<CategoryItems>())
+        CoroutineScope(Main).launch {
+            async(IO) {
+                data = fileWorksThread(requireActivity(), listType, CATEGORIES).filterIsInstance<CategoryItems>()
+            }.await()
+            logThread("UI")
+            view.recycler_view.adapter = categoryAdapter
+            view.recycler_view.layoutManager = GridLayoutManager(requireActivity(), 2)
+            categoryAdapter.submitList(data)
         }
         return view
     }

@@ -15,6 +15,7 @@ import com.msch.helpapp.models.EventDetails
 import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 
 class NewsFragment : Fragment() {
     val listType = object : TypeToken<List<EventDetails>>() {}.type
@@ -30,16 +31,16 @@ class NewsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_news_screen, container, false)
         val newsAdapter = NewsAdapter()
 
-        runBlocking(IO) {
-            data = fileWorksThread(requireContext(), listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
-            filteredData = filterNews(data)
+        CoroutineScope(Main).launch {
+           async(IO) {
+                data = fileWorksThread(requireContext(), listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
+                filteredData = filterNews(data)
+            }.await()
+                logThread("UIMain")
+                view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
+                view.recycler_view.adapter = newsAdapter
+                newsAdapter.submitList(filteredData)
         }
-
-        logThread("UIMain")
-        view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
-        view.recycler_view.adapter = newsAdapter
-        newsAdapter.submitList(filteredData)
-
         return view
     }
 
