@@ -3,7 +3,9 @@ package com.msch.helpapp.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.reflect.TypeToken
@@ -18,6 +20,7 @@ import com.msch.helpapp.concurrency.FileCoroutine.fileWorksThread
 import com.msch.helpapp.concurrency.FileCoroutine.logThread
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 
 class HelpFragment : Fragment() {
     private val CATEGORIES = "categories"
@@ -31,15 +34,18 @@ class HelpFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_help_screen, container, false)
         val categoryAdapter = CategoryViewAdapter()
         var data: List<CategoryItems> = ArrayList()
+        val loadingScreen = view.findViewById<FrameLayout>(R.id.hf_loadingScreen)
 
         CoroutineScope(Main).launch {
             async(IO) {
                 data = fileWorksThread(requireActivity(), listType, CATEGORIES).filterIsInstance<CategoryItems>()
+                //delay(500) //Для теста загрузочного экрана
             }.await()
             logThread("UI")
             view.recycler_view.adapter = categoryAdapter
             view.recycler_view.layoutManager = GridLayoutManager(requireActivity(), 2)
             categoryAdapter.submitList(data)
+            loadingScreen.visibility = GONE
         }
         return view
     }

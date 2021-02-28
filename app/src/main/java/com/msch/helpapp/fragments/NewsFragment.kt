@@ -3,7 +3,9 @@ package com.msch.helpapp.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.reflect.TypeToken
@@ -30,16 +32,19 @@ class NewsFragment : Fragment() {
         var filteredData: List<EventDetails> = ArrayList()
         val view = inflater.inflate(R.layout.fragment_news_screen, container, false)
         val newsAdapter = NewsAdapter()
+        val loadingScreen: FrameLayout = view.findViewById(R.id.nf_loadingScreen)
 
         CoroutineScope(Main).launch {
-           async(IO) {
+            async(IO) {
                 data = fileWorksThread(requireContext(), listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
                 filteredData = filterNews(data)
+                //delay(2000) // Для теста загрузочного экрана
             }.await()
-                logThread("UIMain")
-                view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
-                view.recycler_view.adapter = newsAdapter
-                newsAdapter.submitList(filteredData)
+            logThread("UIMain")
+            view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
+            view.recycler_view.adapter = newsAdapter
+            newsAdapter.submitList(filteredData)
+            loadingScreen.visibility = GONE
         }
         return view
     }
