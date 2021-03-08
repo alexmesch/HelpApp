@@ -13,18 +13,15 @@ import com.msch.helpapp.*
 import com.msch.helpapp.adapters.CategoryViewAdapter
 import com.msch.helpapp.models.CategoryItems
 import kotlinx.android.synthetic.main.fragment_help_screen.view.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 import com.msch.helpapp.concurrency.FileCoroutine.fileWorksThread
 import com.msch.helpapp.concurrency.FileCoroutine.logThread
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 
 class HelpFragment : Fragment() {
     private val CATEGORIES = "categories"
     val listType = object : TypeToken<List<CategoryItems>>() {}.type
+    private val lifecycleScope = MainScope()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -36,7 +33,7 @@ class HelpFragment : Fragment() {
         var data: List<CategoryItems> = ArrayList()
         val loadingScreen = view.findViewById<FrameLayout>(R.id.hf_loadingScreen)
 
-        CoroutineScope(Main).launch {
+        lifecycleScope.launch {
             async(IO) {
                 data = fileWorksThread(requireActivity(), listType, CATEGORIES).filterIsInstance<CategoryItems>()
                 //delay(500) //Для теста загрузочного экрана
@@ -48,5 +45,10 @@ class HelpFragment : Fragment() {
             loadingScreen.visibility = GONE
         }
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        lifecycleScope.cancel()
     }
 }

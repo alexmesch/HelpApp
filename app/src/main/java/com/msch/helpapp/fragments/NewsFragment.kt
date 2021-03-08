@@ -17,11 +17,12 @@ import com.msch.helpapp.models.EventDetails
 import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 
 class NewsFragment : Fragment() {
-    val listType = object : TypeToken<List<EventDetails>>() {}.type
-    val EVENTS_INFORMATION = "events_information"
+    private val listType = object : TypeToken<List<EventDetails>>() {}.type
+    private val EVENTS_INFORMATION = "events_information"
+    private val lifecycleScope = MainScope()
+
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -34,7 +35,7 @@ class NewsFragment : Fragment() {
         val newsAdapter = NewsAdapter()
         val loadingScreen: FrameLayout = view.findViewById(R.id.nf_loadingScreen)
 
-        CoroutineScope(Main).launch {
+        lifecycleScope.launch {
             async(IO) {
                 data = fileWorksThread(requireContext(), listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
                 filteredData = filterNews(data)
@@ -47,6 +48,11 @@ class NewsFragment : Fragment() {
             loadingScreen.visibility = GONE
         }
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        lifecycleScope.cancel()
     }
 
     private fun filterNews(newsData: List<EventDetails>): List<EventDetails> {
