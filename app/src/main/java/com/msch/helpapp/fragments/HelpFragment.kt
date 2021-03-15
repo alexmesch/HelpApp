@@ -36,7 +36,6 @@ class HelpFragment : Fragment() {
         lifecycleScope.launch {
             async(IO) {
                 data = fileWorksThread(requireActivity(), listType, CATEGORIES).filterIsInstance<CategoryItems>()
-                //delay(500) //Для теста загрузочного экрана
             }.await()
             logThread("UI")
             view.recycler_view.adapter = categoryAdapter

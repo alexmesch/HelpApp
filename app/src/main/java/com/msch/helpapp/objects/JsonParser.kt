@@ -1,6 +1,7 @@
 package com.msch.helpapp.objects
 
 import com.google.gson.GsonBuilder
+import com.msch.helpapp.models.CategoryItems
 import java.io.BufferedReader
 import java.io.InputStream
 import java.lang.reflect.Type
