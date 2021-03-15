@@ -34,9 +34,9 @@ class HelpFragment : Fragment() {
         val loadingScreen = view.findViewById<FrameLayout>(R.id.hf_loadingScreen)
 
         lifecycleScope.launch {
-            async(IO) {
+            withContext(IO) {
                 data = fileWorksThread(requireActivity(), listType, CATEGORIES).filterIsInstance<CategoryItems>()
-            }.await()
+            }
             logThread("UI")
             view.recycler_view.adapter = categoryAdapter
             view.recycler_view.layoutManager = GridLayoutManager(requireActivity(), 2)

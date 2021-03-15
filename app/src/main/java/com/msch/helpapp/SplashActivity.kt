@@ -18,14 +18,11 @@ import java.io.FileInputStream
 import java.io.InputStream
 
 class SplashActivity : AppCompatActivity() {
-    //private val SPLASH_TIME_OUT: Long = 3000
     private var realm: Realm? = null
     private val realmScope = MainScope()
-    //private val mainActivity = Intent(this,MainActivity::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val context = applicationContext
-        //val mainActivity = Intent(this,MainActivity::class.java)
         super.onCreate(savedInstanceState)
         realmScope.launch {
             setContentView(R.layout.splash_screen)
@@ -36,8 +33,8 @@ class SplashActivity : AppCompatActivity() {
                     .build()
                 realm = Realm.getInstance(realmConfig)
                 realm?.executeTransaction {
-                    realm?.createAllFromJson(RealmCategories::class.java, context.assets.open("categories"))
-                    realm?.createAllFromJson(RealmEvents::class.java, context.assets.open("events_information"))
+                    realm?.createOrUpdateAllFromJson(RealmCategories::class.java, context.assets.open("categories"))
+                    realm?.createOrUpdateAllFromJson(RealmEvents::class.java, context.assets.open("events_information"))
                 }
                 realm?.close()
             }

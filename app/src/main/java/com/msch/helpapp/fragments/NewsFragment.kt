@@ -36,11 +36,11 @@ class NewsFragment : Fragment() {
         val loadingScreen: FrameLayout = view.findViewById(R.id.nf_loadingScreen)
 
         lifecycleScope.launch {
-            async(IO) {
+            withContext(IO) {
                 data = fileWorksThread(requireContext(), listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
                 filteredData = filterNews(data)
                 //delay(2000) // Для теста загрузочного экрана
-            }.await()
+            }
             logThread("UIMain")
             view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
             view.recycler_view.adapter = newsAdapter

@@ -16,6 +16,7 @@ import com.msch.helpapp.concurrency.FileCoroutine.logThread
 import com.msch.helpapp.models.EventDetails
 import com.msch.helpapp.objects.TimeWorks.calculateEstimatedTime
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 
 
 class EventDetailsActivity : AppCompatActivity() {
@@ -28,10 +29,9 @@ class EventDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            async {
+            withContext(IO){
                 eventInfo = fileWorksThread(applicationContext, listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
-            }.await()
-
+            }
             logThread("UI")
             setContentView(R.layout.ac_event_details)
             val eventTitle = findViewById<TextView>(R.id.ed_title)
