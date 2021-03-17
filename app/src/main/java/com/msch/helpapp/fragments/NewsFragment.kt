@@ -13,7 +13,11 @@ import com.msch.helpapp.R
 import com.msch.helpapp.adapters.NewsAdapter
 import com.msch.helpapp.concurrency.FileCoroutine.fileWorksThread
 import com.msch.helpapp.concurrency.FileCoroutine.logThread
+import com.msch.helpapp.database.RealmConfig.realmConfig
+import com.msch.helpapp.database.RealmEvents
 import com.msch.helpapp.models.EventDetails
+import com.msch.helpapp.objects.JsonParser.parseJson
+import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -37,9 +41,12 @@ class NewsFragment : Fragment() {
 
         lifecycleScope.launch {
             withContext(IO) {
-                data = fileWorksThread(requireContext(), listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
+                val realm = Realm.getInstance(realmConfig)
+                val realmData = realm.where(RealmEvents::class.java).findAll()
+                data = parseJson(realmData.asJSON().toString(), listType).filterIsInstance<EventDetails>()
+                //data = fileWorksThread(requireContext(), listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
                 filteredData = filterNews(data)
-                //delay(2000) // Для теста загрузочного экрана
+                realm.close()
             }
             logThread("UIMain")
             view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())

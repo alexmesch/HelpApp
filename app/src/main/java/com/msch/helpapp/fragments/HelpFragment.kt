@@ -1,6 +1,7 @@
 package com.msch.helpapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -16,11 +17,16 @@ import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.coroutines.Dispatchers.IO
 import com.msch.helpapp.concurrency.FileCoroutine.fileWorksThread
 import com.msch.helpapp.concurrency.FileCoroutine.logThread
+import com.msch.helpapp.database.RealmCategories
+import com.msch.helpapp.database.RealmConfig.realmConfig
+import com.msch.helpapp.objects.JsonParser.parseJson
+import io.realm.Realm
+import io.realm.kotlin.where
 import kotlinx.coroutines.*
 
 class HelpFragment : Fragment() {
     private val CATEGORIES = "categories"
-    val listType = object : TypeToken<List<CategoryItems>>() {}.type
+    private val listType = object : TypeToken<List<CategoryItems>>() {}.type
     private val lifecycleScope = MainScope()
 
     override fun onCreateView(
@@ -35,7 +41,10 @@ class HelpFragment : Fragment() {
 
         lifecycleScope.launch {
             withContext(IO) {
-                data = fileWorksThread(requireActivity(), listType, CATEGORIES).filterIsInstance<CategoryItems>()
+                val realm = Realm.getInstance(realmConfig)
+                val realmData = realm.where(RealmCategories::class.java).findAll()
+                data = parseJson(realmData.asJSON().toString(), listType).filterIsInstance<CategoryItems>()
+                realm.close()
             }
             logThread("UI")
             view.recycler_view.adapter = categoryAdapter

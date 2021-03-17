@@ -1,4 +1,4 @@
-package com.msch.helpapp.network
+package com.msch.helpapp.database
 
 import io.realm.RealmList
 import io.realm.RealmObject

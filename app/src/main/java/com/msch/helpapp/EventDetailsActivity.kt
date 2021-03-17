@@ -13,8 +13,13 @@ import com.msch.helpapp.adapters.EdFriendsAdapter
 import com.msch.helpapp.adapters.EdImagesAdapter
 import com.msch.helpapp.concurrency.FileCoroutine.fileWorksThread
 import com.msch.helpapp.concurrency.FileCoroutine.logThread
+import com.msch.helpapp.database.RealmConfig.realmConfig
+import com.msch.helpapp.database.RealmEvents
 import com.msch.helpapp.models.EventDetails
+import com.msch.helpapp.objects.JsonParser.parseJson
 import com.msch.helpapp.objects.TimeWorks.calculateEstimatedTime
+import io.realm.Realm
+import io.realm.kotlin.where
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 
@@ -30,9 +35,12 @@ class EventDetailsActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             withContext(IO){
-                eventInfo = fileWorksThread(applicationContext, listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
+                val realm = Realm.getInstance(realmConfig)
+                val realmData = realm.where(RealmEvents::class.java).findAll()
+                eventInfo = parseJson(realmData.asJSON().toString(), listType).filterIsInstance<EventDetails>()
+                //eventInfo = fileWorksThread(applicationContext, listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
+                realm.close()
             }
-            logThread("UI")
             setContentView(R.layout.ac_event_details)
             val eventTitle = findViewById<TextView>(R.id.ed_title)
             val eventSubtitle = findViewById<TextView>(R.id.ed_subtitle)
