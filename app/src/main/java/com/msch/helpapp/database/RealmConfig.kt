@@ -4,7 +4,7 @@ import io.realm.RealmConfiguration
 
 object RealmConfig {
     val realmConfig: RealmConfiguration = RealmConfiguration.Builder()
-        .schemaVersion(4)
+        .schemaVersion(6)
         .name("HelpAppDB.realm")
         .migration(MigrateRealmDB())
         .build()

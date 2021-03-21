@@ -1,6 +1,7 @@
 package com.msch.helpapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.reflect.TypeToken
 import com.msch.helpapp.R
 import com.msch.helpapp.adapters.NewsAdapter
-import com.msch.helpapp.concurrency.FileCoroutine.fileWorksThread
 import com.msch.helpapp.concurrency.FileCoroutine.logThread
 import com.msch.helpapp.database.RealmConfig.realmConfig
 import com.msch.helpapp.database.RealmEvents
@@ -43,8 +43,8 @@ class NewsFragment : Fragment() {
             withContext(IO) {
                 val realm = Realm.getInstance(realmConfig)
                 val realmData = realm.where(RealmEvents::class.java).findAll()
+                Log.d("realmData", realmData.toString())
                 data = parseJson(realmData.asJSON().toString(), listType).filterIsInstance<EventDetails>()
-                //data = fileWorksThread(requireContext(), listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
                 filteredData = filterNews(data)
                 realm.close()
             }

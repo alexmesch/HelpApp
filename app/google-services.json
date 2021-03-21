@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "49203761221",
+    "firebase_url": "https://helpapp-a8652-default-rtdb.firebaseio.com",
+    "project_id": "helpapp-a8652",
+    "storage_bucket": "helpapp-a8652.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49203761221:android:4f0a49c5a5f1d548a9532c",
+        "android_client_info": {
+          "package_name": "com.msch.helpapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "49203761221-drrqftblqqb8gujl54le6bmejl92e2s4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY5GNsDW2wso6BXT00GKSlCPTCW0tc_5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49203761221-drrqftblqqb8gujl54le6bmejl92e2s4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,6 @@
 package com.msch.helpapp.database
 
-import io.realm.DynamicRealm
-import io.realm.FieldAttribute
-import io.realm.RealmMigration
+import io.realm.*
 
 class MigrateRealmDB: RealmMigration {
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
@@ -33,6 +31,20 @@ class MigrateRealmDB: RealmMigration {
             schema.get("RealmCategories")!!
                 .removeField("testField")
             schema.remove("RealmTestObject")
+            oldVersion++
+        }
+
+        if (oldVersion == 4L) {
+            schema.get("RealmEvents")!!
+                .removeField("eventSecondaryImages")
+                .removeField("eventFriends")
+            oldVersion++
+        }
+
+        if (oldVersion == 5L) {
+            schema.get("RealmEvents")!!
+                .addRealmListField("eventSecondaryImages", String::class.java)
+                .addRealmListField("eventFriends",String::class.java)
             oldVersion++
         }
     }
