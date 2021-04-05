@@ -3,11 +3,16 @@ package com.msch.helpapp.database
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import io.realm.annotations.Required
+import org.bson.types.ObjectId
 
 open class RealmEvents(
     @PrimaryKey
-    var eventId: String = "",
+    var _id: ObjectId = ObjectId(),
+    @Required
+    var _partitionValue: String = "HelpApp",
 
+    var eventId: String = "",
     var eventCategory: String = "",
     var eventMainImage: String = "",
     var eventSecondaryImages: RealmList<String> = RealmList(),

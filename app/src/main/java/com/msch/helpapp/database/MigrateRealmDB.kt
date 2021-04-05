@@ -1,6 +1,7 @@
 package com.msch.helpapp.database
 
 import io.realm.*
+import org.bson.types.ObjectId
 
 class MigrateRealmDB: RealmMigration {
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
@@ -45,6 +46,14 @@ class MigrateRealmDB: RealmMigration {
             schema.get("RealmEvents")!!
                 .addRealmListField("eventSecondaryImages", String::class.java)
                 .addRealmListField("eventFriends",String::class.java)
+            oldVersion++
+        }
+
+        if (oldVersion == 6L) {
+            schema.get("RealmCategories")!!
+                .addField("_id", ObjectId::class.java)
+            schema.get("RealmEvents")!!
+                .addField("_id", ObjectId::class.java)
             oldVersion++
         }
     }

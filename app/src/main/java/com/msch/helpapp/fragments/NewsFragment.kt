@@ -8,12 +8,19 @@ import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.gson.reflect.TypeToken
 import com.msch.helpapp.R
 import com.msch.helpapp.adapters.NewsAdapter
 import com.msch.helpapp.concurrency.FileCoroutine.logThread
-import com.msch.helpapp.database.RealmConfig.realmConfig
+import com.msch.helpapp.database.FirebaseOperations
+import com.msch.helpapp.database.RealmConfig.defineRealmConfig
 import com.msch.helpapp.database.RealmEvents
 import com.msch.helpapp.models.EventDetails
 import com.msch.helpapp.objects.JsonParser.parseJson
@@ -29,31 +36,33 @@ class NewsFragment : Fragment() {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         var data: List<EventDetails>
-        var filteredData: List<EventDetails> = ArrayList()
+        var filteredData: List<EventDetails>
         val view = inflater.inflate(R.layout.fragment_news_screen, container, false)
         val newsAdapter = NewsAdapter()
-        val loadingScreen: FrameLayout = view.findViewById(R.id.nf_loadingScreen)
+        val loadingScreen = view.findViewById<FrameLayout>(R.id.nf_loadingScreen)
 
         lifecycleScope.launch {
-            withContext(IO) {
-                val realm = Realm.getInstance(realmConfig)
-                val realmData = realm.where(RealmEvents::class.java).findAll()
-                Log.d("realmData", realmData.toString())
-                data = parseJson(realmData.asJSON().toString(), listType).filterIsInstance<EventDetails>()
-                filteredData = filterNews(data)
-                realm.close()
-            }
-            logThread("UIMain")
-            view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
-            view.recycler_view.adapter = newsAdapter
-            newsAdapter.submitList(filteredData)
-            loadingScreen.visibility = GONE
+            val dbRef = Firebase.database.reference
+            dbRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    data = FirebaseOperations.retrieveEventsData(dataSnapshot, "RealmEvents")
+                    filteredData = filterNews(data)
+                    view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
+                    view.recycler_view.adapter = newsAdapter
+                    newsAdapter.submitList(filteredData)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w("Firebase", "Load: cancelled", databaseError.toException())
+                }
+            })
         }
+        loadingScreen.visibility = GONE
         return view
     }
 
