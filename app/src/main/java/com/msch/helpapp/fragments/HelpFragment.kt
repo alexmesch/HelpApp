@@ -35,7 +35,7 @@ class HelpFragment : Fragment() {
         val loadingScreen = view.findViewById<FrameLayout>(R.id.hf_loadingScreen)
 
         lifecycleScope.launch {
-            val dbRef = Firebase.database.reference;
+            val dbRef = Firebase.database.reference
             dbRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     data = retrieveCategoriesData(dataSnapshot, "RealmCategories")

@@ -1,7 +1,6 @@
 package com.msch.helpapp.adapters
 
 import android.content.Context
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.msch.helpapp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.ed_photo_recycler_item.view.*
-import java.net.URL
 
 class EdImagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -19,7 +17,6 @@ class EdImagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val edImage = itemView.ed_image
 
         fun bind(imageItem: List<String>, context: Context) {
-            //edImage.setImageResource(context.resources.getIdentifier(imageItem[position],"drawable",context.packageName))
             Picasso.get().load(imageItem[position]).into(edImage)
         }
     }

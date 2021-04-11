@@ -14,21 +14,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.gson.reflect.TypeToken
 import com.msch.helpapp.adapters.EdFriendsAdapter
 import com.msch.helpapp.adapters.EdImagesAdapter
 import com.msch.helpapp.database.FirebaseOperations
-import com.msch.helpapp.database.RealmConfig.defineRealmConfig
-import com.msch.helpapp.database.RealmEvents
 import com.msch.helpapp.models.EventDetails
-import com.msch.helpapp.objects.JsonParser.parseJson
 import com.msch.helpapp.objects.TimeWorks.calculateEstimatedTime
-import io.realm.Realm
-import io.realm.kotlin.where
-import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
-
 
 class EventDetailsActivity : AppCompatActivity() {
     private var eventInfo: List<EventDetails> = ArrayList()
@@ -67,7 +58,7 @@ class EventDetailsActivity : AppCompatActivity() {
                     imagesRecycler.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
                     imagesRecycler.adapter = imagesAdapter
                     imagesAdapter.submitList(eventInfo[eventPosition].eventSecondaryImages)
-                    Log.i("pics:", eventInfo[eventPosition].eventSecondaryImages.toString())
+                    Log.i("images", eventInfo[eventPosition].eventSecondaryImages.toString())
 
                     val friendsRecycler: RecyclerView = findViewById(R.id.ed_friends_recycler)
                     val friendsAdapter = EdFriendsAdapter()

@@ -1,7 +1,6 @@
 package com.msch.helpapp.adapters
 
 import android.content.Context
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,7 @@ class CategoryViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         private val categoryName = itemView.category_title
 
         init {
-            itemView.setOnClickListener() {
+            itemView.setOnClickListener {
                 val newsFragment: Fragment = NewsFragment()
                 val passInfo = Bundle()
                 val fragmentManager = (itemView.context as AppCompatActivity).supportFragmentManager
