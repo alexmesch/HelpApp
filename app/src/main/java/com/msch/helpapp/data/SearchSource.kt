@@ -18,7 +18,7 @@ class SearchSource {
         private fun randomizeString(length: Int): String {
             val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('а'..'я') + ('А'..'Я') + ('0'..'9')
             return (1..length)
-                .map{ _ -> kotlin.random.Random.nextInt(0,charPool.size)}
+                .map{kotlin.random.Random.nextInt(0,charPool.size)}
                 .map(charPool::get)
                 .joinToString("")
         }

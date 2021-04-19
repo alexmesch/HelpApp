@@ -64,4 +64,9 @@
         <item quantity="other">Осталось</item>
     </plurals>
     <string name="nf_event_finished">Мероприятие завершено</string>
+    <string name="ed_friends_content_desc">edFriendsPic</string>
+    <string name="content_desc_ed_photo">edPhotoPic</string>
+    <string name="content_desc_event_image">eventImagePic</string>
+    <string name="content_desc_eventBack">eventBack</string>
+    <string name="content_desc_pic">picHere</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.msch.helpapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -8,45 +9,50 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.reflect.TypeToken
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.msch.helpapp.R
 import com.msch.helpapp.adapters.NewsAdapter
-import com.msch.helpapp.concurrency.FileCoroutine.fileWorksThread
-import com.msch.helpapp.concurrency.FileCoroutine.logThread
+import com.msch.helpapp.database.FirebaseOperations.retrieveFirebaseData
 import com.msch.helpapp.models.EventDetails
 import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
 
 class NewsFragment : Fragment() {
-    private val listType = object : TypeToken<List<EventDetails>>() {}.type
-    private val EVENTS_INFORMATION = "events_information"
     private val lifecycleScope = MainScope()
-
+    private val dataType = EventDetails::class.java.newInstance()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         var data: List<EventDetails>
-        var filteredData: List<EventDetails> = ArrayList()
+        var filteredData: List<EventDetails>
         val view = inflater.inflate(R.layout.fragment_news_screen, container, false)
         val newsAdapter = NewsAdapter()
-        val loadingScreen: FrameLayout = view.findViewById(R.id.nf_loadingScreen)
+        val loadingScreen = view.findViewById<FrameLayout>(R.id.nf_loadingScreen)
 
         lifecycleScope.launch {
-            async(IO) {
-                data = fileWorksThread(requireContext(), listType, EVENTS_INFORMATION).filterIsInstance<EventDetails>()
-                filteredData = filterNews(data)
-                //delay(2000) // Для теста загрузочного экрана
-            }.await()
-            logThread("UIMain")
-            view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
-            view.recycler_view.adapter = newsAdapter
-            newsAdapter.submitList(filteredData)
-            loadingScreen.visibility = GONE
+            val dbRef = Firebase.database.reference
+            dbRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    data = retrieveFirebaseData(dataSnapshot, "RealmEvents", dataType)
+                    filteredData = filterNews(data)
+                    view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
+                    view.recycler_view.adapter = newsAdapter
+                    newsAdapter.submitList(filteredData)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w("Firebase", "Load: cancelled", databaseError.toException())
+                }
+            })
         }
+        loadingScreen.visibility = GONE
         return view
     }
 
@@ -56,14 +62,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun filterNews(newsData: List<EventDetails>): List<EventDetails> {
-        val filteredNews: List<EventDetails>
-        val filter: String = arguments?.getString("categoryID").toString()
-
-        filteredNews = if (filter == "null") {
-            newsData
-        } else {
-            newsData.filter { it.eventCategory == filter }
-        }
-        return filteredNews
+        val filter = arguments?.getString("categoryID")
+        return newsData.filter { filter == null || it.eventCategory == filter}
     }
 }

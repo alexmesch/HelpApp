@@ -8,11 +8,11 @@ import com.msch.helpapp.R
 import com.msch.helpapp.models.SearchInfo
 import kotlinx.android.synthetic.main.sf_ve_recycler_item.view.*
 
-class SearchEventsAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchEventsAdapter : RecyclerView.Adapter<SearchEventsAdapter.SearchViewHolder>() {
 
     private var searchItems: List<SearchInfo> = ArrayList()
 
-    inner class SearchViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val searchResult = itemView.searchResult
 
         fun bind(searchItem: SearchInfo) {
@@ -20,23 +20,19 @@ class SearchEventsAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         return SearchViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.sf_ve_recycler_item, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder) {
-            is SearchViewHolder -> {
-                holder.bind(searchItems[position])
-            }
-        }
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+        holder.bind(searchItems[position])
     }
 
     override fun getItemCount(): Int = searchItems.size
 
-    fun submitList(searchList : List<SearchInfo>) {
+    fun submitList(searchList: List<SearchInfo>) {
         searchItems = searchList
     }
 }

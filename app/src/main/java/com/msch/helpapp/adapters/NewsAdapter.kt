@@ -12,10 +12,10 @@ import com.msch.helpapp.models.EventDetails
 import com.msch.helpapp.objects.TimeWorks.calculateEstimatedTime
 import kotlinx.android.synthetic.main.nf_recycler_item.view.*
 
-class NewsAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     private var items: List<EventDetails> = ArrayList()
 
-    inner class NewsViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val eventTitle = itemView.nfi_event_title
         private val eventPic = itemView.nfi_event_image
         private val eventDesc = itemView.nfi_event_description
@@ -24,38 +24,40 @@ class NewsAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         init {
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, EventDetailsActivity::class.java)
-                intent.putExtra("ID",items[position].eventId)
+                intent.putExtra("ID", items[position].eventId)
                 itemView.context.startActivity(intent)
             }
         }
 
         fun bind(newsItem: EventDetails, context: Context) {
             eventTitle.text = newsItem.eventName
-            eventPic.setImageResource(context.resources.getIdentifier(newsItem.eventMainImage,"drawable",context.packageName))
+            eventPic.setImageResource(
+                context.resources.getIdentifier(
+                    newsItem.eventMainImage,
+                    "drawable",
+                    context.packageName
+                )
+            )
             eventDesc.text = newsItem.eventDescription
             eventTime.text = calculateEstimatedTime(newsItem.eventDate, context)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         return NewsViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.nf_recycler_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.nf_recycler_item, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder) {
-            is NewsViewHolder -> {
-                holder.bind(items[position],holder.itemView.context)
-            }
-        }
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        holder.bind(items[position], holder.itemView.context)
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    fun submitList(newsList : List<EventDetails>) {
+    fun submitList(newsList: List<EventDetails>) {
         items = newsList
     }
 }

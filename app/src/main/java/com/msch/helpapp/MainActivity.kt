@@ -16,10 +16,8 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_main_screen)
-
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         openFragment(HelpFragment())
-
     }
 
     fun openHelpScreen(v: View) {
