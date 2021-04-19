@@ -45,5 +45,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/background_rectangle"
         app:layout_constraintEnd_toEndOf="@+id/category_image"
         app:layout_constraintStart_toStartOf="@+id/category_image"
-        app:layout_constraintTop_toBottomOf="@+id/category_image" />
+        app:layout_constraintTop_toBottomOf="@+id/category_image"
+        tools:ignore="LabelFor" />
 </androidx.constraintlayout.widget.ConstraintLayout>

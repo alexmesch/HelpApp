@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout2"
     android:layout_width="360dp"
     android:layout_height="410dp"
@@ -13,6 +12,7 @@
         android:layout_height="400dp"
         android:layout_marginTop="4dp"
         android:background="@color/white"
+        android:contentDescription="@string/content_desc_eventBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +25,7 @@
         android:layout_marginTop="3dp"
         android:adjustViewBounds="true"
         android:background="@drawable/cardimage"
+        android:contentDescription="@string/content_desc_event_image"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="@+id/nfi_background"
         app:layout_constraintHorizontal_bias="0.5"
@@ -89,7 +90,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/icon_calendar"
+            app:drawableStartCompat="@drawable/icon_calendar"
             android:text="@string/nfi_time_left_placeholder">
         </TextView>
 

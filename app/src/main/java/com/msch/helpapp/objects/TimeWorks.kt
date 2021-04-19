@@ -15,11 +15,11 @@ object TimeWorks {
         val currentDate = DateTime.now()
         val eventDate = dateFormat.parseDateTime(date)
         val estimatedTime = Period(currentDate, eventDate, PeriodType.days())
-        if (estimatedTime.days >= 0) {
-            return ("${context.resources.getQuantityString(R.plurals.days_left_plurals, estimatedTime.days)} ${estimatedTime.days} ${context.resources.getQuantityString(R.plurals.days_plurals, estimatedTime.days)} (${eventDate.get(DateTimeFieldType.dayOfMonth())}" +
+        return if (estimatedTime.days >= 0) {
+            ("${context.resources.getQuantityString(R.plurals.days_left_plurals, estimatedTime.days)} ${estimatedTime.days} ${context.resources.getQuantityString(R.plurals.days_plurals, estimatedTime.days)} (${eventDate.get(DateTimeFieldType.dayOfMonth())}" +
                     ".${eventDate.get(DateTimeFieldType.monthOfYear())}" + ".${eventDate.get(DateTimeFieldType.year())})")
         } else {
-            return (context.resources.getString(R.string.nf_event_finished) + " (${eventDate.get(DateTimeFieldType.dayOfMonth())}" +
+            (context.resources.getString(R.string.nf_event_finished) + " (${eventDate.get(DateTimeFieldType.dayOfMonth())}" +
                     ".${eventDate.get(DateTimeFieldType.monthOfYear())}" + ".${eventDate.get(DateTimeFieldType.year())})")
         }
     }

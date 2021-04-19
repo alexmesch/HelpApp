@@ -14,7 +14,7 @@ import com.msch.helpapp.fragments.NewsFragment
 import com.msch.helpapp.models.CategoryItems
 import kotlinx.android.synthetic.main.hf_recycler_item.view.*
 
-class CategoryViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class CategoryViewAdapter : RecyclerView.Adapter<CategoryViewAdapter.CategoryViewHolder>() {
     private var items: List<CategoryItems> = ArrayList()
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,29 +40,29 @@ class CategoryViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
         fun bind(categoryItem: CategoryItems, context: Context) {
             categoryName.setText(categoryItem.categoryName)
-            categoryImage.setImageResource(context.resources.getIdentifier(categoryItem.categoryImage, "drawable", context.packageName))
+            categoryImage.setImageResource(
+                context.resources.getIdentifier(
+                    categoryItem.categoryImage,
+                    "drawable",
+                    context.packageName
+                )
+            )
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.hf_recycler_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.hf_recycler_item, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder) {
-            is CategoryViewHolder -> {
-                holder.bind(items[position], holder.itemView.context)
-            }
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount() = items.size
 
     fun submitList(categoryList: List<CategoryItems>) {
         items = categoryList
+    }
+
+    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+        holder.bind(items[position], holder.itemView.context)
     }
 }

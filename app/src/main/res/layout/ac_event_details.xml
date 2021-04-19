@@ -40,7 +40,7 @@
             android:layout_height="24dp"
             android:background="@drawable/back"
             android:gravity="center_vertical"
-            android:onClick="finishActivity"></Button>
+            android:onClick="finishActivity"> </Button>
 
         <TextView
             android:id="@+id/ed_title"
@@ -54,7 +54,7 @@
             android:paddingEnd="2dp"
             android:requiresFadingEdge="horizontal"
             android:singleLine="true"
-            android:text="@string/event_details_title_placeholder"></TextView>
+            android:text="@string/event_details_title_placeholder"> </TextView>
 
         <Button
             android:id="@+id/ed_share_btn"
@@ -62,7 +62,7 @@
             android:layout_height="24dp"
             android:background="@drawable/icon_share_btn"
             android:gravity="end"
-            android:padding="1dp"></Button>
+            android:padding="1dp"> </Button>
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
@@ -179,7 +179,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/ed_bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="bottom|center"
         android:layout_weight="1"
         android:background="@color/white"

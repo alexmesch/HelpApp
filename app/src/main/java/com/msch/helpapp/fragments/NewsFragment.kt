@@ -16,13 +16,14 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.msch.helpapp.R
 import com.msch.helpapp.adapters.NewsAdapter
-import com.msch.helpapp.database.FirebaseOperations
+import com.msch.helpapp.database.FirebaseOperations.retrieveFirebaseData
 import com.msch.helpapp.models.EventDetails
 import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.coroutines.*
 
 class NewsFragment : Fragment() {
     private val lifecycleScope = MainScope()
+    private val dataType = EventDetails::class.java.newInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +40,7 @@ class NewsFragment : Fragment() {
             val dbRef = Firebase.database.reference
             dbRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    data = FirebaseOperations.retrieveEventsData(dataSnapshot, "RealmEvents")
+                    data = retrieveFirebaseData(dataSnapshot, "RealmEvents", dataType)
                     filteredData = filterNews(data)
                     view.recycler_view.layoutManager = LinearLayoutManager(requireActivity())
                     view.recycler_view.adapter = newsAdapter
@@ -61,14 +62,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun filterNews(newsData: List<EventDetails>): List<EventDetails> {
-        val filteredNews: List<EventDetails>
-        val filter: String = arguments?.getString("categoryID").toString()
-
-        filteredNews = if (filter == "null") {
-            newsData
-        } else {
-            newsData.filter { it.eventCategory == filter }
-        }
-        return filteredNews
+        val filter = arguments?.getString("categoryID")
+        return newsData.filter { filter == null || it.eventCategory == filter}
     }
 }

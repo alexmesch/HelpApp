@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import io.realm.Realm
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 

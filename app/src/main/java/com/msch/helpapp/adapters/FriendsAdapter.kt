@@ -8,7 +8,7 @@ import com.msch.helpapp.R
 import com.msch.helpapp.models.FriendsInfo
 import kotlinx.android.synthetic.main.pf_recycler_item.view.*
 
-class FriendsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FriendsAdapter : RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() {
 
     private var friendsItems: List<FriendsInfo> = ArrayList()
 
@@ -23,18 +23,14 @@ class FriendsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendsViewHolder {
         return FriendsViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.pf_recycler_item, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder) {
-            is FriendsViewHolder -> {
+    override fun onBindViewHolder(holder: FriendsViewHolder, position: Int) {
                 holder.bind(friendsItems[position])
-            }
-        }
     }
 
     override fun getItemCount(): Int {

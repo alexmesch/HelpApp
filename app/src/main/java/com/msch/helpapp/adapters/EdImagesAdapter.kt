@@ -9,30 +9,26 @@ import com.msch.helpapp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.ed_photo_recycler_item.view.*
 
-class EdImagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EdImagesAdapter : RecyclerView.Adapter<EdImagesAdapter.ImagesViewHolder>() {
 
     private var items: List<String> = ArrayList()
 
     inner class ImagesViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val edImage = itemView.ed_image
+        private val edImage = itemView.ed_image
 
         fun bind(imageItem: List<String>, context: Context) {
             Picasso.get().load(imageItem[position]).into(edImage)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         return ImagesViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.ed_photo_recycler_item, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder) {
-            is ImagesViewHolder -> {
-                holder.bind(items, holder.itemView.context)
-            }
-        }
+    override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) {
+            holder.bind(items, holder.itemView.context)
     }
 
     override fun getItemCount(): Int {

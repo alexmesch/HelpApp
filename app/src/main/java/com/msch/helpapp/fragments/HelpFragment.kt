@@ -16,13 +16,15 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.msch.helpapp.*
 import com.msch.helpapp.adapters.CategoryViewAdapter
-import com.msch.helpapp.database.FirebaseOperations.retrieveCategoriesData
+import com.msch.helpapp.database.FirebaseOperations.retrieveFirebaseData
 import com.msch.helpapp.models.CategoryItems
 import kotlinx.android.synthetic.main.fragment_help_screen.view.*
 import kotlinx.coroutines.*
 
 class HelpFragment : Fragment() {
     private val lifecycleScope = MainScope()
+    private val firebaseChild = "RealmCategories"
+    private val dataType = CategoryItems::class.java.newInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +40,7 @@ class HelpFragment : Fragment() {
             val dbRef = Firebase.database.reference
             dbRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    data = retrieveCategoriesData(dataSnapshot, "RealmCategories")
+                    data = retrieveFirebaseData(dataSnapshot, firebaseChild, dataType)
                     view.recycler_view.adapter = categoryAdapter
                     view.recycler_view.layoutManager = GridLayoutManager(requireActivity(), 2)
                     categoryAdapter.submitList(data)

@@ -16,7 +16,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.msch.helpapp.adapters.EdFriendsAdapter
 import com.msch.helpapp.adapters.EdImagesAdapter
-import com.msch.helpapp.database.FirebaseOperations
+import com.msch.helpapp.database.FirebaseOperations.retrieveFirebaseData
 import com.msch.helpapp.models.EventDetails
 import com.msch.helpapp.objects.TimeWorks.calculateEstimatedTime
 import kotlinx.coroutines.*
@@ -25,6 +25,9 @@ class EventDetailsActivity : AppCompatActivity() {
     private var eventInfo: List<EventDetails> = ArrayList()
     private val lifecycleScope = MainScope()
     private var eventPosition = 0
+    private val dataType = EventDetails::class.java.newInstance()
+    private val firebaseChild = "RealmEvents"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +37,9 @@ class EventDetailsActivity : AppCompatActivity() {
             val dbRef = Firebase.database.reference
             dbRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    eventInfo = FirebaseOperations.retrieveEventsData(dataSnapshot, "RealmEvents")
+                    eventInfo = retrieveFirebaseData(dataSnapshot, firebaseChild, dataType)
                     val eId = intent.getStringExtra("ID")
+
                     eventPosition = eventInfo.indexOfFirst { it.eventId == eId }
                     val eventTitle = findViewById<TextView>(R.id.ed_title)
                     val eventSubtitle = findViewById<TextView>(R.id.ed_subtitle)

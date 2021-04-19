@@ -9,6 +9,7 @@
         android:id="@+id/edf_image"
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:contentDescription="@string/ed_friends_content_desc"
         android:padding="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

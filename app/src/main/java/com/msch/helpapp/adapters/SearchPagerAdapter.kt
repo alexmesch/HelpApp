@@ -19,6 +19,4 @@ class SearchPagerAdapter(supportFragmentManager: FragmentManager): FragmentPager
         mFragmentList.add(fragment)
         mFragmentTitle.add(title)
     }
-
-
 }

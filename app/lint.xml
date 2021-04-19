@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="IconLocation">
+        <ignore path="src/main/res/drawable/alexandrov.png" />
+        <ignore path="src/main/res/drawable/cardimage.png" />
+        <ignore path="src/main/res/drawable/cardimage2.png" />
+        <ignore path="src/main/res/drawable/image_man.png" />
+        <ignore path="src/main/res/drawable/kuznetsov.png" />
+        <ignore path="src/main/res/drawable/valerevich.png" />
+    </issue>
+    <issue id="UnusedResources">
+        <ignore path="src/main/res/drawable/cardimage2.png" />
+    </issue>
+</lint>
