@@ -5,40 +5,46 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.msch.helpapp.fragments.HelpFragment
-import com.msch.helpapp.fragments.NewsFragment
-import com.msch.helpapp.fragments.ProfileFragment
-import com.msch.helpapp.fragments.SearchFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.msch.helpapp.fragments.*
 import kotlinx.android.synthetic.main.ac_main_screen.*
+import com.msch.helpapp.fragments.FragmentsManager.openFragment
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
+    lateinit var auth: FirebaseAuth
+    lateinit var profileFragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_main_screen)
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        openFragment(HelpFragment())
+        auth = Firebase.auth
+        openFragment(HelpFragment(), this.supportFragmentManager)
     }
 
     fun openHelpScreen(v: View) {
-        openFragment(HelpFragment())
+        openFragment(HelpFragment(), this.supportFragmentManager)
     }
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.news_button -> openFragment(NewsFragment())
-            R.id.search_button -> openFragment(SearchFragment())
-            R.id.profile_button -> openFragment(ProfileFragment())
-            R.id.help_ghost_button -> openFragment(HelpFragment())
-            R.id.history_button -> {}
-            else -> null
-        } != null
-    }
-
-    private fun openFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragmentView, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
+    private val mOnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.news_button -> openFragment(NewsFragment(), this.supportFragmentManager)
+                R.id.search_button -> openFragment(SearchFragment(), this.supportFragmentManager)
+                R.id.profile_button -> {
+                    if (auth.currentUser != null) {
+                        openFragment(ProfileFragment(),this.supportFragmentManager)
+                    }
+                    else {
+                        openFragment(AuthFragment(),this.supportFragmentManager)
+                    }
+                }
+                R.id.help_ghost_button -> openFragment(HelpFragment(), this.supportFragmentManager)
+                R.id.history_button -> {
+                }
+                else -> null
+            } != null
+        }
 }

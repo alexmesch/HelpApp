@@ -69,4 +69,15 @@
     <string name="content_desc_event_image">eventImagePic</string>
     <string name="content_desc_eventBack">eventBack</string>
     <string name="content_desc_pic">picHere</string>
+    <string name="auth_title">Авторизация</string>
+    <string name="auth_what_to_do">Для участия в мероприятиях войдите в приложение через социальные сети</string>
+    <string name="auth_alternative_to_do">Или авторизуйтесь через приложение</string>
+    <string name="auth_email_field_title">E-mail</string>
+    <string name="auth_email_field_hint">Введите e-mail</string>
+    <string name="auth_password_field_title">Пароль</string>
+    <string name="auth_password_field_hint">Введите пароль</string>
+    <string name="login">Войти</string>
+    <string name="forgot_pswrd"><u>Забыли пароль?</u></string>
+    <string name="sign_up"><u>Регистрация</u></string>
+    <string name="register">Регистрация</string>
 </resources>
