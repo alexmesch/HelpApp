@@ -24,6 +24,7 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_profile_screen.view.*
 
 class ProfileFragment : Fragment() {
@@ -50,7 +51,8 @@ class ProfileFragment : Fragment() {
 
                 val profileObservable: Observable<UserProfile> = Observable
                     .just(retrieveUserInformation(dataSnapshot, firebaseChild))
-                    .subscribeOn(mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(mainThread())
 
                 profileObservable.subscribe(object : Observer<UserProfile> {
                     override fun onSubscribe(d: Disposable) {
@@ -60,7 +62,6 @@ class ProfileFragment : Fragment() {
 
                     override fun onNext(task: UserProfile) {
                         profileInfo = UserProfile(task.birthday, task.friends, task.name, task.occupation, task.profilePic)
-                        Log.d("rx", "thread:" + Thread.currentThread().name)
                     }
 
                     override fun onError(e: Throwable) {
@@ -76,6 +77,7 @@ class ProfileFragment : Fragment() {
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w("Firebase", "Load: cancelled", databaseError.toException())
             }
+
         })
         view.pf_RecyclerView.layoutManager = LinearLayoutManager(requireActivity())
         view.pf_RecyclerView.adapter = friendsAdapter
