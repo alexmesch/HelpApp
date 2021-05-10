@@ -1,4 +1,4 @@
-package com.msch.helpapp.fragments
+package com.msch.helpapp.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.msch.helpapp.R
-import com.msch.helpapp.adapters.SearchPagerAdapter
+import com.msch.helpapp.view.adapters.SearchPagerAdapter
 import kotlinx.android.synthetic.main.fragment_search_screen.*
 
 class SearchFragment : Fragment() {

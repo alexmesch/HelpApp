@@ -6,8 +6,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.msch.helpapp.data.authentication.FirebaseLogin
 import com.msch.helpapp.implementations.EmailValidator.isEmailValid
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 class FirebaseLoginImpl : FirebaseLogin {
     override fun firebaseLogin(email: String, password: String): Boolean {

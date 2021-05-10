@@ -1,4 +1,4 @@
-package com.msch.helpapp.adapters
+package com.msch.helpapp.view.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

@@ -1,4 +1,4 @@
-package com.msch.helpapp.fragments
+package com.msch.helpapp.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,17 +8,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.msch.helpapp.R
-import com.msch.helpapp.adapters.SearchEventsAdapter
-import com.msch.helpapp.data.EventDetailsRepo
+import com.msch.helpapp.view.adapters.SearchEventsAdapter
 import com.msch.helpapp.implementations.*
-import com.msch.helpapp.interactors.*
 import kotlinx.android.synthetic.main.sf_viewpager_events_fragment.view.*
-import javax.inject.Inject
 
 class EventsSearchFragment: Fragment() {
-    @Inject
-    lateinit var interactors: Interactors
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,16 +20,7 @@ class EventsSearchFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.sf_viewpager_events_fragment, container, false)
         val searchAdapter = SearchEventsAdapter()
-        interactors = Interactors(
-            AddEvents(EventDetailsRepo(EventDetailsDsImpl())),
-            FilterNews(FilterNewsImpl()),
-            AddCategories(CategoryItemsDsImpl()),
-            GetUserInfo(GetUserInfoImpl()),
-            GenerateSearchResults(SearchResultsGenerator()),
-            FirebaseLogin(FirebaseLoginImpl()),
-            FirebaseReg(FirebaseRegImpl())
-        )
-        val data = interactors.generateSearchResults()
+        val data = SearchResultsGenerator().generateSearchResults()
 
         view.sf_ve_recycler.layoutManager = LinearLayoutManager(requireActivity())
         view.sf_ve_recycler.adapter = searchAdapter

@@ -1,4 +1,4 @@
-package com.msch.helpapp.adapters
+package com.msch.helpapp.view.adapters
 
 import android.content.Context
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.msch.helpapp.R
-import com.msch.helpapp.fragments.NewsFragment
+import com.msch.helpapp.view.fragments.NewsFragment
 import com.msch.helpapp.domain.CategoryItems
 import kotlinx.android.synthetic.main.hf_recycler_item.view.*
 

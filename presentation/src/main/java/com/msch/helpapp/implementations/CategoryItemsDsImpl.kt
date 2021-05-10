@@ -10,7 +10,6 @@ class CategoryItemsDsImpl: CategoryItemsDS {
     override fun addCategories(): List<CategoryItems> {
         val fb = Firebase.database.reference
         val task = fb.child("RealmCategories").get()
-
         return Tasks.await(task).children.mapNotNull { it.getValue(CategoryItems::class.java) }
     }
 }

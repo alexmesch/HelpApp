@@ -1,94 +1,79 @@
 package com.msch.helpapp
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.msch.helpapp.adapters.EdFriendsAdapter
-import com.msch.helpapp.adapters.EdImagesAdapter
-import com.msch.helpapp.data.EventDetailsRepo
+import com.msch.helpapp.DI.DependencyInjectorImpl
+import com.msch.helpapp.view.adapters.EdFriendsAdapter
+import com.msch.helpapp.view.adapters.EdImagesAdapter
 import com.msch.helpapp.domain.EventDetails
-import com.msch.helpapp.implementations.*
 import com.msch.helpapp.implementations.TimeWorks.calculateEstimatedTime
-import com.msch.helpapp.interactors.*
+import com.msch.helpapp.presenter.EventsPresenter
+import com.msch.helpapp.view.contracts.EventsContract
+import kotlinx.android.synthetic.main.ac_event_details.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import javax.inject.Inject
 
-class EventDetailsActivity : AppCompatActivity() {
-    private var eventInfo: List<EventDetails> = ArrayList()
-    private lateinit var eventTime: String
+class EventDetailsActivity : AppCompatActivity(), EventsContract.EventsView {
+    private lateinit var eventInfo: List<EventDetails>
     private val lifecycleScope = MainScope()
-    private var eventPosition = 0
-
-    @Inject
-    lateinit var interactors: Interactors
-
+    private lateinit var presenter: EventsContract.EventsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_event_details)
-        interactors = Interactors(
-            AddEvents(EventDetailsRepo(EventDetailsDsImpl())),
-            FilterNews(FilterNewsImpl()),
-            AddCategories(CategoryItemsDsImpl()),
-            GetUserInfo(GetUserInfoImpl()),
-            GenerateSearchResults(SearchResultsGenerator()),
-            FirebaseLogin(FirebaseLoginImpl()),
-            FirebaseReg(FirebaseRegImpl())
-        )
+        setPresenter(EventsPresenter(this, DependencyInjectorImpl()))
+        val view: View = this.findViewById(android.R.id.content)
 
         lifecycleScope.launch {
             withContext(IO) {
-                eventInfo = interactors.addEvents()
-                eventTime = calculateEstimatedTime(eventInfo[eventPosition].eventDate, applicationContext)
+                eventInfo = presenter.getEvents("null")
             }
-
-
-            val eId = intent.getStringExtra("ID")
-            eventPosition = eventInfo.indexOfFirst { it.eventId == eId }
-
-            findViewById<TextView>(R.id.ed_title).text = eventInfo[eventPosition].eventName
-            findViewById<TextView>(R.id.ed_subtitle).text = eventInfo[eventPosition].eventName
-            findViewById<TextView>(R.id.ed_event_date).text = eventTime
-            findViewById<TextView>(R.id.ed_organizer).text = eventInfo[eventPosition].eventOrganizer
-            findViewById<TextView>(R.id.ed_location).text = eventInfo[eventPosition].eventLocation
-            findViewById<TextView>(R.id.ed_phones).text = eventInfo[eventPosition].eventContacts
-            findViewById<TextView>(R.id.ed_description).text = eventInfo[eventPosition].eventDescription
-
-            val imagesRecycler: RecyclerView = findViewById(R.id.ed_images_recycler)
-            val imagesAdapter = EdImagesAdapter()
-            imagesRecycler.layoutManager =
-                LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-            imagesRecycler.adapter = imagesAdapter
-            imagesAdapter.submitList(eventInfo[eventPosition].eventSecondaryImages)
-
-            val friendsRecycler: RecyclerView = findViewById(R.id.ed_friends_recycler)
-            val friendsAdapter = EdFriendsAdapter()
-            friendsRecycler.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-            friendsRecycler.adapter = friendsAdapter
-            friendsAdapter.submitList(eventInfo[eventPosition].eventFriends)
-            findViewById<FrameLayout>(R.id.ed_loadingScreen).visibility = GONE
+            displayEvents(eventInfo)
+            switchLoadingScreen(view)
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+        lifecycleScope.cancel()
+    }
 
-override fun onResume() {
-    super.onResume()
-    findViewById<FrameLayout>(R.id.ed_loadingScreen).visibility = GONE
-}
+    fun finishActivity(view: View) {
+        finish()
+    }
 
-override fun onDestroy() {
-    super.onDestroy()
-    lifecycleScope.cancel()
-}
+    override fun setPresenter(presenter: EventsContract.EventsPresenter) {
+        this.presenter = presenter
+    }
 
-fun finishActivity(view: View) {
-    finish()
-}
+    override fun displayEvents(event: List<EventDetails>) {
+        val eventPosition = event.indexOfFirst { it.eventId == intent.getStringExtra("ID") }
+
+        val imagesAdapter = EdImagesAdapter()
+        this.ed_images_recycler.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        this.ed_images_recycler.adapter = imagesAdapter
+        imagesAdapter.submitList(event[eventPosition].eventSecondaryImages)
+
+        this.ed_title.text = event[eventPosition].eventName
+        this.ed_subtitle.text = event[eventPosition].eventName
+        this.ed_event_date.text = calculateEstimatedTime(event[eventPosition].eventDate,this)
+        this.ed_organizer.text = event[eventPosition].eventOrganizer
+        this.ed_location.text = event[eventPosition].eventLocation
+        this.ed_phones.text = event[eventPosition].eventContacts
+        this.ed_description.text = event[eventPosition].eventDescription
+
+        val friendsAdapter = EdFriendsAdapter()
+        this.ed_friends_recycler.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        this.ed_friends_recycler.adapter = friendsAdapter
+        friendsAdapter.submitList(event[eventPosition].eventFriends)
+    }
+
+    private fun switchLoadingScreen(view: View) {
+        view.findViewById<FrameLayout>(R.id.ed_loadingScreen).visibility = GONE
+    }
 }

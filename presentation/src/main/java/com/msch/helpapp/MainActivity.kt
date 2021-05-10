@@ -7,9 +7,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.msch.helpapp.fragments.*
+import com.msch.helpapp.view.fragments.*
 import kotlinx.android.synthetic.main.ac_main_screen.*
-import com.msch.helpapp.fragments.FragmentsManager.openFragment
+import com.msch.helpapp.view.fragments.FragmentsManager.openFragment
 
 class MainActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
@@ -33,10 +33,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.search_button -> openFragment(SearchFragment(), this.supportFragmentManager)
                 R.id.profile_button -> {
                     if (auth.currentUser != null) {
-                        openFragment(ProfileFragment(),this.supportFragmentManager)
-                    }
-                    else {
-                        openFragment(AuthFragment(),this.supportFragmentManager)
+                        openFragment(ProfileFragment(), this.supportFragmentManager)
+                    } else {
+                        openFragment(AuthFragment(), this.supportFragmentManager)
                     }
                 }
                 R.id.help_ghost_button -> openFragment(HelpFragment(), this.supportFragmentManager)

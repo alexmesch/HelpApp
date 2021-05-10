@@ -1,4 +1,4 @@
-package com.msch.helpapp.fragments
+package com.msch.helpapp.view.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog

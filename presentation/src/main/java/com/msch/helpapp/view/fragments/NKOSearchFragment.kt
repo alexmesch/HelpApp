@@ -1,4 +1,4 @@
-package com.msch.helpapp.fragments
+package com.msch.helpapp.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,6 @@ class NKOSearchFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.sf_viewpager_nko_fragment,container,false)
     }
 }
