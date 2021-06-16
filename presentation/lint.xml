@@ -9,6 +9,9 @@
         <ignore path="src/main/res/drawable/valerevich.png" />
     </issue>
     <issue id="UnusedResources">
+        <ignore path="src/main/res/drawable/alexandrov.png" />
         <ignore path="src/main/res/drawable/cardimage2.png" />
+        <ignore path="src/main/res/drawable/kuznetsov.png" />
+        <ignore path="src/main/res/drawable/valerevich.png" />
     </issue>
 </lint>

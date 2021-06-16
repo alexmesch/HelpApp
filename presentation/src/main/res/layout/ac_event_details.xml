@@ -39,8 +39,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@drawable/back"
-            android:gravity="center_vertical"
-            android:onClick="finishActivity"> </Button>
+            android:gravity="center_vertical"> </Button>
 
         <TextView
             android:id="@+id/ed_title"
