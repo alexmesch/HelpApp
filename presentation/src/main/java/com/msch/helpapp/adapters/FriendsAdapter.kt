@@ -4,20 +4,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.msch.data.model.FriendsInfo
 import com.msch.helpapp.R
 import kotlinx.android.synthetic.main.pf_recycler_item.view.*
 
 class FriendsAdapter : RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() {
 
-    private var friendsItems: List<FriendsInfo> = ArrayList()
+    private var friendsItems: List<com.msch.domain.model.FriendsInfo> = ArrayList()
 
     inner class FriendsViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val friendsImage = itemView.friend_profile_pic
         private val friendsName = itemView.friend_name
 
 
-        fun bind(friendsItems: FriendsInfo) {
+        fun bind(friendsItems: com.msch.domain.model.FriendsInfo) {
             friendsName.setText(friendsItems.friendName)
             friendsImage.setImageResource(friendsItems.friendPic)
         }
@@ -37,7 +36,7 @@ class FriendsAdapter : RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() 
         return friendsItems.size
     }
 
-    fun submitList(friendsList : List<FriendsInfo>) {
+    fun submitList(friendsList : List<com.msch.domain.model.FriendsInfo>) {
         friendsItems = friendsList
     }
 }

@@ -5,7 +5,7 @@ import com.msch.helpapp.dagger.modules.EventDetailsModule
 import com.msch.helpapp.dagger.modules.UserInfoModule
 import dagger.Component
 
-@Component(modules = [EventDetailsModule::class])
+@Component(modules = [EventDetailsModule::class, CategoryItemsModule::class, UserInfoModule::class])
 interface DataComponent {
     fun getEDComponent(): EventDetailsModule
     fun getCDComponent(): CategoryItemsModule

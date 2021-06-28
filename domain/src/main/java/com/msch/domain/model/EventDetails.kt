@@ -1,4 +1,4 @@
-package com.msch.data.model
+package com.msch.domain.model
 
 data class EventDetails(
         val eventId: String? = null,

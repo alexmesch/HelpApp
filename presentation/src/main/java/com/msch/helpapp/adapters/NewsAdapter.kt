@@ -6,14 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.msch.data.model.EventDetails
+import com.msch.data.datasource.TimeWorks.calculateEstimatedTime
 import com.msch.helpapp.EventDetailsActivity
 import com.msch.helpapp.R
-import com.msch.domain.TimeWorks.calculateEstimatedTime
 import kotlinx.android.synthetic.main.nf_recycler_item.view.*
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
-    private var items: List<EventDetails> = ArrayList()
+    private var items: List<com.msch.domain.model.EventDetails> = ArrayList()
 
     inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val eventTitle = itemView.nfi_event_title
@@ -29,7 +28,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
             }
         }
 
-        fun bind(newsItem: EventDetails, context: Context) {
+        fun bind(newsItem: com.msch.domain.model.EventDetails, context: Context) {
             eventTitle.text = newsItem.eventName
             eventPic.setImageResource(
                 context.resources.getIdentifier(
@@ -57,7 +56,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         return items.size
     }
 
-    fun submitList(newsList: List<EventDetails>) {
+    fun submitList(newsList: List<com.msch.domain.model.EventDetails>) {
         items = newsList
     }
 }

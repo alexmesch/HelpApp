@@ -4,18 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.msch.data.model.SearchInfo
 import com.msch.helpapp.R
 import kotlinx.android.synthetic.main.sf_ve_recycler_item.view.*
 
 class SearchEventsAdapter : RecyclerView.Adapter<SearchEventsAdapter.SearchViewHolder>() {
 
-    private var searchItems: List<SearchInfo> = ArrayList()
+    private var searchItems: List<com.msch.domain.model.SearchInfo> = ArrayList()
 
     inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val searchResult = itemView.searchResult
 
-        fun bind(searchItem: SearchInfo) {
+        fun bind(searchItem: com.msch.domain.model.SearchInfo) {
             searchResult.text = searchItem.results
         }
     }
@@ -32,7 +31,7 @@ class SearchEventsAdapter : RecyclerView.Adapter<SearchEventsAdapter.SearchViewH
 
     override fun getItemCount(): Int = searchItems.size
 
-    fun submitList(searchList: List<SearchInfo>) {
+    fun submitList(searchList: List<com.msch.domain.model.SearchInfo>) {
         searchItems = searchList
     }
 }

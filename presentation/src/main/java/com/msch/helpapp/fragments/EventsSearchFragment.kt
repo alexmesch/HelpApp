@@ -11,6 +11,7 @@ import com.msch.data.datasource.SearchResultsDS
 import com.msch.helpapp.R
 import com.msch.helpapp.adapters.SearchEventsAdapter
 import kotlinx.android.synthetic.main.sf_viewpager_events_fragment.view.*
+import javax.inject.Inject
 
 class EventsSearchFragment: Fragment() {
     override fun onCreateView(

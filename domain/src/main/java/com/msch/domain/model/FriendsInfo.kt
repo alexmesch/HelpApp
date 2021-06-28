@@ -1,4 +1,4 @@
-package com.msch.data.model
+package com.msch.domain.model
 
 data class FriendsInfo(
     val friendName: String,

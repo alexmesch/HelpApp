@@ -9,13 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
-import com.msch.data.model.CategoryItems
 import com.msch.helpapp.R
 import com.msch.helpapp.fragments.NewsFragment
 import kotlinx.android.synthetic.main.hf_recycler_item.view.*
 
 class CategoryViewAdapter : RecyclerView.Adapter<CategoryViewAdapter.CategoryViewHolder>() {
-    private var items: List<CategoryItems> = ArrayList()
+    private var items: List<com.msch.domain.model.CategoryItems> = ArrayList()
     private val catId = "categoryID"
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -39,7 +38,7 @@ class CategoryViewAdapter : RecyclerView.Adapter<CategoryViewAdapter.CategoryVie
             }
         }
 
-        fun bind(categoryItem: CategoryItems, context: Context) {
+        fun bind(categoryItem: com.msch.domain.model.CategoryItems, context: Context) {
             categoryName.setText(categoryItem.categoryName)
             categoryImage.setImageResource(
                 context.resources.getIdentifier(
@@ -59,7 +58,7 @@ class CategoryViewAdapter : RecyclerView.Adapter<CategoryViewAdapter.CategoryVie
 
     override fun getItemCount() = items.size
 
-    fun submitList(categoryList: List<CategoryItems>) {
+    fun submitList(categoryList: List<com.msch.domain.model.CategoryItems>) {
         items = categoryList
     }
 

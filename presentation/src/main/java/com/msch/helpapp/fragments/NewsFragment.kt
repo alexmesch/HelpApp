@@ -8,28 +8,22 @@ import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.msch.data.model.EventDetails
+import com.msch.domain.model.EventDetails
 import com.msch.helpapp.R
 import com.msch.helpapp.presenters.NewsPresenter
 import com.msch.helpapp.views.NewsView
 import com.msch.helpapp.adapters.NewsAdapter
-import durdinapps.rxfirebase2.DataSnapshotMapper
-import durdinapps.rxfirebase2.RxFirebaseDatabase
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_news_screen.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
 class NewsFragment : MvpAppCompatFragment(), NewsView {
     private val id = "categoryID"
+    private val disposables = CompositeDisposable()
 
     @InjectPresenter
     lateinit var newsPresenter: NewsPresenter
@@ -44,12 +38,31 @@ class NewsFragment : MvpAppCompatFragment(), NewsView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val filter = arguments?.getString(id).toString()
         val view = inflater.inflate(R.layout.fragment_news_screen, container, false)
+        val filter = arguments?.getString(id).toString()
+
         providePresenter()
-        val data = newsPresenter.getNews(filter)
-        newsPresenter.displayNews(data)
-        switchLoadingScreen(view)
+
+        newsPresenter.getObservable().subscribe(object: SingleObserver<List<EventDetails>> {
+            override fun onSubscribe(d: Disposable) {
+                disposables.add(d)
+            }
+
+            override fun onSuccess(t: List<EventDetails>) {
+                if (filter == "null") {
+                    newsPresenter.displayNews(t)
+                }
+                else {
+                    newsPresenter.displayNews(t.filter {it.eventCategory == filter})
+                }
+                disposables.clear()
+                view.findViewById<FrameLayout>(R.id.nf_loadingScreen).visibility = GONE
+            }
+
+            override fun onError(e: Throwable) {
+                Log.e("nfObserver", "subscription fail!")
+            }
+        })
         return view
     }
 
@@ -58,9 +71,5 @@ class NewsFragment : MvpAppCompatFragment(), NewsView {
         this.recycler_view.layoutManager = LinearLayoutManager(requireContext())
         this.recycler_view.adapter = newsAdapter
         newsAdapter.submitList(news)
-    }
-
-    private fun switchLoadingScreen(view: View) {
-        view.findViewById<FrameLayout>(R.id.nf_loadingScreen).visibility = GONE
     }
 }

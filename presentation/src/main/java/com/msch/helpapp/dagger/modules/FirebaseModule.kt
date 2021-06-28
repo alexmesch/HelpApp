@@ -1,6 +1,6 @@
 package com.msch.helpapp.dagger.modules
 
-import com.msch.domain.FirebaseOps
+import com.msch.data.datasource.FirebaseOps
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject

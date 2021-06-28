@@ -1,28 +1,29 @@
 package com.msch.helpapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.msch.data.model.UserProfile
+import com.msch.domain.model.UserProfile
 import com.msch.helpapp.R
 import com.msch.helpapp.presenters.UserPresenter
 import com.msch.helpapp.views.UserView
 import com.msch.helpapp.adapters.FriendsAdapter
+import io.reactivex.SingleObserver
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_profile_screen.*
 import kotlinx.android.synthetic.main.fragment_profile_screen.view.*
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
 class ProfileFragment : MvpAppCompatFragment(), UserView {
-    private var profileScope = MainScope()
+    private var disposables = CompositeDisposable()
 
     @InjectPresenter(presenterId = "profilePresenter")
     lateinit var profilePresenter: UserPresenter
@@ -38,17 +39,25 @@ class ProfileFragment : MvpAppCompatFragment(), UserView {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile_screen, container, false)
-        lateinit var profileInfo: UserProfile
         providePresenter()
 
-
-        profileScope.launch {
-            withContext(IO) {
-                profileInfo = profilePresenter.getUserInfo()
+        profilePresenter.getObservable()
+            .subscribe(object: SingleObserver<UserProfile> {
+            override fun onSubscribe(d: Disposable) {
+                disposables.add(d)
             }
-            profilePresenter.showProfile(profileInfo)
-            switchLoadingScreen(requireView())
-        }
+
+            override fun onSuccess(t: UserProfile) {
+                profilePresenter.showProfile(t)
+                disposables.clear()
+                view.pf_loading_screen.visibility = GONE
+            }
+
+            override fun onError(e: Throwable) {
+                Log.e("pfObserver", "subscription fail!")
+                e.stackTrace
+            }
+        })
         view.pf_logout_button.setOnClickListener{ (profilePresenter.logOut(requireActivity().supportFragmentManager))}
         return view
     }
@@ -73,9 +82,5 @@ class ProfileFragment : MvpAppCompatFragment(), UserView {
         val dialogFragment = PFDialog()
         val manager = childFragmentManager
         dialogFragment.show(manager, "dialog")
-    }
-
-    private fun switchLoadingScreen(v: View) {
-        v.pf_loading_screen.visibility = GONE
     }
 }

@@ -1,8 +1,9 @@
 package com.msch.helpapp.presenters
 
-import com.msch.data.model.EventDetails
+import com.msch.domain.model.EventDetails
 import com.msch.helpapp.dagger.components.DaggerDataComponent
 import com.msch.helpapp.views.EventDetailsView
+import io.reactivex.Single
 import moxy.InjectViewState
 import moxy.MvpPresenter
 
@@ -15,7 +16,7 @@ class EventDetailsPresenter: MvpPresenter<EventDetailsView>() {
         return
     }
 
-    fun getEvents(): List<EventDetails> {
-        return edComponent.download()
+    fun getObservable(): Single<List<EventDetails>> {
+        return edComponent.getEdObservable()
     }
 }

@@ -1,6 +1,6 @@
 package com.msch.data.datasource
 
-import com.msch.data.model.SearchInfo
+import com.msch.domain.model.SearchInfo
 
 class SearchResultsDS{
     fun generateSearchResults(): ArrayList<SearchInfo> {

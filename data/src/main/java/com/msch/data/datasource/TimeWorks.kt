@@ -1,6 +1,7 @@
-package com.msch.domain
+package com.msch.data.datasource
 
 import android.content.Context
+import com.msch.data.R
 import org.joda.time.DateTime
 import org.joda.time.DateTimeFieldType
 import org.joda.time.Period
