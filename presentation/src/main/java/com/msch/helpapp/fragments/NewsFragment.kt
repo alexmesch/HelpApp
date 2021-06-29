@@ -13,6 +13,7 @@ import com.msch.helpapp.R
 import com.msch.helpapp.presenters.NewsPresenter
 import com.msch.helpapp.views.NewsView
 import com.msch.helpapp.adapters.NewsAdapter
+import com.msch.helpapp.dagger.components.DaggerDataComponent
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -24,6 +25,7 @@ import moxy.presenter.ProvidePresenter
 class NewsFragment : MvpAppCompatFragment(), NewsView {
     private val id = "categoryID"
     private val disposables = CompositeDisposable()
+    private val edComponent = DaggerDataComponent.create()
 
     @InjectPresenter
     lateinit var newsPresenter: NewsPresenter
@@ -43,7 +45,7 @@ class NewsFragment : MvpAppCompatFragment(), NewsView {
 
         providePresenter()
 
-        newsPresenter.getObservable().subscribe(object: SingleObserver<List<EventDetails>> {
+        newsPresenter.getObservable(edComponent).subscribe(object: SingleObserver<List<EventDetails>> {
             override fun onSubscribe(d: Disposable) {
                 disposables.add(d)
             }

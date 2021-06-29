@@ -10,28 +10,23 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.AuthResult
-import com.msch.domain.model.UserProfile
 import com.msch.helpapp.R
 import com.msch.helpapp.dagger.components.DaggerFirebaseComponent
 import com.msch.helpapp.dagger.components.DaggerFragmentManagerComponent
 import com.msch.helpapp.presenters.AuthPresenter
 import com.msch.helpapp.views.AuthView
-import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_auth_screen.view.*
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
-import javax.inject.Inject
 
 class AuthFragment: MvpAppCompatFragment(), AuthView {
     private val disposables = CompositeDisposable()
+    private val authComponent = DaggerFirebaseComponent.create()
+    private val fmComponent = DaggerFragmentManagerComponent.create()
 
     @ProvidePresenter
     fun providePresenter(): AuthPresenter {
@@ -53,7 +48,7 @@ class AuthFragment: MvpAppCompatFragment(), AuthView {
         val loginListener = OnClickListener {
             val email = view.findViewById<EditText>(R.id.email_field).text.toString()
             val password = view.findViewById<EditText>(R.id.password_field).text.toString()
-            authPresenter.getSignInObservable(email, password)
+            authPresenter.getSignInObservable(authComponent, email, password)
                 .subscribe(object: SingleObserver<AuthResult> {
                 override fun onSubscribe(d: Disposable) {
                     disposables.add(d)
@@ -82,7 +77,7 @@ class AuthFragment: MvpAppCompatFragment(), AuthView {
         val regListener = OnClickListener {
             val email = view.findViewById<EditText>(R.id.email_field).text.toString()
             val password = view.findViewById<EditText>(R.id.password_field).text.toString()
-            authPresenter.getSignUpObservable(email, password)
+            authPresenter.getSignUpObservable(authComponent, email, password)
                 .subscribe(object: SingleObserver<AuthResult> {
                     override fun onSubscribe(d: Disposable) {
                         disposables.add(d)
@@ -123,7 +118,7 @@ class AuthFragment: MvpAppCompatFragment(), AuthView {
     override fun showProfile(authResult: Boolean, fm: FragmentManager) {
         if (authResult) {
             fm.popBackStack()
-            authPresenter.showFragment(ProfileFragment(), fm)
+            authPresenter.showFragment(fmComponent, ProfileFragment(), fm)
         } else {
             Toast.makeText(
                 activity?.applicationContext,

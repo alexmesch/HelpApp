@@ -13,6 +13,8 @@ import com.msch.helpapp.R
 import com.msch.helpapp.presenters.UserPresenter
 import com.msch.helpapp.views.UserView
 import com.msch.helpapp.adapters.FriendsAdapter
+import com.msch.helpapp.dagger.components.DaggerDataComponent
+import com.msch.helpapp.dagger.components.DaggerFragmentManagerComponent
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -24,6 +26,8 @@ import moxy.presenter.ProvidePresenter
 
 class ProfileFragment : MvpAppCompatFragment(), UserView {
     private var disposables = CompositeDisposable()
+    private val fmComponent = DaggerFragmentManagerComponent.create()
+    private val udComponent = DaggerDataComponent.create()
 
     @InjectPresenter(presenterId = "profilePresenter")
     lateinit var profilePresenter: UserPresenter
@@ -41,7 +45,7 @@ class ProfileFragment : MvpAppCompatFragment(), UserView {
         val view = inflater.inflate(R.layout.fragment_profile_screen, container, false)
         providePresenter()
 
-        profilePresenter.getObservable()
+        profilePresenter.getObservable(udComponent)
             .subscribe(object: SingleObserver<UserProfile> {
             override fun onSubscribe(d: Disposable) {
                 disposables.add(d)
@@ -58,7 +62,7 @@ class ProfileFragment : MvpAppCompatFragment(), UserView {
                 e.stackTrace
             }
         })
-        view.pf_logout_button.setOnClickListener{ (profilePresenter.logOut(requireActivity().supportFragmentManager))}
+        view.pf_logout_button.setOnClickListener{ (profilePresenter.logOut(fmComponent, requireActivity().supportFragmentManager))}
         return view
     }
 

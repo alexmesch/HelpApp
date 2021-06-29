@@ -6,17 +6,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.msch.helpapp.dagger.components.DaggerFragmentManagerComponent
+import com.msch.helpapp.dagger.components.FragmentManagerComponent
 import com.msch.helpapp.views.FragmentView
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 @InjectViewState
 class MainViewPresenter: MvpPresenter<FragmentView>() {
-    private val fragmentManager = DaggerFragmentManagerComponent.builder().build().getFragmentManager().fm()
-
-    fun showFragment(fragment: Fragment, fm: FragmentManager) {
-        //viewState.openFragment(fragment, fm)
-        fragmentManager.openFragment(fragment, fm)
+    @Inject
+    fun showFragment(fmComponent: FragmentManagerComponent, fragment: Fragment, fm: FragmentManager) {
+        fmComponent.getFragmentManager().fm().openFragment(fragment, fm)
         return
     }
 

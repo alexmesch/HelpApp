@@ -2,8 +2,10 @@ package com.msch.helpapp.dagger.components
 
 import com.msch.helpapp.dagger.modules.FragmentManagerModule
 import dagger.Component
+import javax.inject.Singleton
 
-@Component
+@Singleton
+@Component(modules = [FragmentManagerModule::class])
 interface FragmentManagerComponent {
     fun getFragmentManager(): FragmentManagerModule
 }

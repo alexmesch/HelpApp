@@ -41,7 +41,7 @@ class EventDetailsActivity : MvpAppCompatActivity(), EventDetailsView {
         view.findViewById<Button>(R.id.ed_back_btn).setOnClickListener{finishActivity(view)}
         provideEdPresenter()
 
-        edPresenter.getObservable().subscribe(object: SingleObserver<List<EventDetails>> {
+        edPresenter.getObservable(DaggerDataComponent.create()).subscribe(object: SingleObserver<List<EventDetails>> {
             override fun onSubscribe(d: Disposable) {
                 disposables.add(d)
             }
