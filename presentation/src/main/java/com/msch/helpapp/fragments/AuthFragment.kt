@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.AuthResult
 import com.msch.helpapp.R
 import com.msch.helpapp.dagger.components.DaggerFirebaseComponent
-import com.msch.helpapp.dagger.components.DaggerFragmentManagerComponent
 import com.msch.helpapp.dagger.modules.FirebaseModule
 import com.msch.helpapp.dagger.modules.FragmentManagerModule
 import com.msch.helpapp.presenters.AuthPresenter
@@ -35,16 +34,10 @@ class AuthFragment : MvpAppCompatFragment(), AuthView {
     lateinit var authPresenter: AuthPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //Log.d("presenter:",authPresenter.toString())
         if(!::authPresenter.isInitialized) {
             DaggerFirebaseComponent
                 .builder()
                 .firebaseModule(FirebaseModule())
-                .build()
-                .inject(this)
-
-            DaggerFragmentManagerComponent
-                .builder()
                 .fragmentManagerModule(FragmentManagerModule())
                 .build()
                 .inject(this)
