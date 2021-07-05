@@ -1,5 +1,6 @@
 package com.msch.helpapp.dagger.components
 
+import android.app.Activity
 import androidx.fragment.app.Fragment
 import com.msch.helpapp.dagger.modules.CategoryItemsModule
 import com.msch.helpapp.dagger.modules.EventDetailsModule
@@ -15,5 +16,6 @@ interface DataComponent {
     fun getCDComponent(): CategoryItemsModule
     fun getUDComponent(): UserInfoModule
 
-    fun inject(presenter: HelpPresenter)
+    fun inject(fragment: Fragment)
+    fun inject(act: Activity)
 }

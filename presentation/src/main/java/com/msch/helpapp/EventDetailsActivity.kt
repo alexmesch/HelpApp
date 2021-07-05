@@ -12,6 +12,7 @@ import com.msch.data.datasource.TimeWorks.calculateEstimatedTime
 import com.msch.helpapp.adapters.EdFriendsAdapter
 import com.msch.helpapp.adapters.EdImagesAdapter
 import com.msch.helpapp.dagger.components.DaggerDataComponent
+import com.msch.helpapp.dagger.modules.EventDetailsModule
 import com.msch.helpapp.presenters.EventDetailsPresenter
 import com.msch.helpapp.views.EventDetailsView
 import io.reactivex.SingleObserver
@@ -19,29 +20,29 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.ac_event_details.*
 import moxy.MvpAppCompatActivity
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
 
 class EventDetailsActivity : MvpAppCompatActivity(), EventDetailsView {
     private var disposables = CompositeDisposable()
 
-    @InjectPresenter(presenterId = "edPresenter")
+    @Inject
     lateinit var edPresenter: EventDetailsPresenter
 
-    @ProvidePresenter
-    fun provideEdPresenter(): EventDetailsPresenter {
-        return EventDetailsPresenter()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        DaggerDataComponent
+            .builder()
+            .eventDetailsModule(EventDetailsModule())
+            .build()
+            .inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ac_event_details)
         val view: View = this.findViewById(android.R.id.content)
 
         view.findViewById<Button>(R.id.ed_back_btn).setOnClickListener{finishActivity(view)}
-        provideEdPresenter()
 
-        edPresenter.getObservable(DaggerDataComponent.create()).subscribe(object: SingleObserver<List<EventDetails>> {
+        edPresenter.getObservable().subscribe(object: SingleObserver<List<EventDetails>> {
             override fun onSubscribe(d: Disposable) {
                 disposables.add(d)
             }

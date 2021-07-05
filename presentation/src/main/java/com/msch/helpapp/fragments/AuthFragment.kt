@@ -13,6 +13,8 @@ import com.google.firebase.auth.AuthResult
 import com.msch.helpapp.R
 import com.msch.helpapp.dagger.components.DaggerFirebaseComponent
 import com.msch.helpapp.dagger.components.DaggerFragmentManagerComponent
+import com.msch.helpapp.dagger.modules.FirebaseModule
+import com.msch.helpapp.dagger.modules.FragmentManagerModule
 import com.msch.helpapp.presenters.AuthPresenter
 import com.msch.helpapp.views.AuthView
 import io.reactivex.SingleObserver
@@ -20,21 +22,31 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_auth_screen.view.*
 import moxy.MvpAppCompatFragment
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
 
-class AuthFragment: MvpAppCompatFragment(), AuthView {
+class AuthFragment : MvpAppCompatFragment(), AuthView {
     private val disposables = CompositeDisposable()
-    private val authComponent = DaggerFirebaseComponent.create()
-    private val fmComponent = DaggerFragmentManagerComponent.create()
 
-    @ProvidePresenter
-    fun providePresenter(): AuthPresenter {
-        return AuthPresenter()
-    }
-
-    @InjectPresenter(presenterId = "authPresenter")
+    @Inject
     lateinit var authPresenter: AuthPresenter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        if(!::authPresenter.isInitialized) {
+            DaggerFirebaseComponent
+                .builder()
+                .firebaseModule(FirebaseModule())
+                .build()
+                .inject(this)
+
+            DaggerFragmentManagerComponent
+                .builder()
+                .fragmentManagerModule(FragmentManagerModule())
+                .build()
+                .inject(this)
+        }
+        //Log.d("presenter:",authPresenter.toString())
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,42 +55,13 @@ class AuthFragment: MvpAppCompatFragment(), AuthView {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_auth_screen, container, false)
         val fm = requireActivity().supportFragmentManager
-        providePresenter()
+        //Log.d("presenter onCreateView:",authPresenter.toString())
 
         val loginListener = OnClickListener {
             val email = view.findViewById<EditText>(R.id.email_field).text.toString()
             val password = view.findViewById<EditText>(R.id.password_field).text.toString()
-            authPresenter.getSignInObservable(authComponent, email, password)
-                .subscribe(object: SingleObserver<AuthResult> {
-                override fun onSubscribe(d: Disposable) {
-                    disposables.add(d)
-                }
-
-                override fun onSuccess(t: AuthResult) {
-                    if (t.user != null) {
-                        authPresenter.displayProfile(true, fm)
-                    }
-                    else {
-                        authPresenter.displayProfile(false, fm)
-                    }
-                    disposables.clear()
-                    view.af_loadingScreen.visibility = GONE
-                }
-
-                override fun onError(e: Throwable) {
-                    Toast.makeText(requireContext(), "Неверный логин или пароль", Toast.LENGTH_SHORT).show()
-                    Log.e("afObserver", "subscription fail")
-                    e.stackTrace
-                }
-
-            })
-        }
-
-        val regListener = OnClickListener {
-            val email = view.findViewById<EditText>(R.id.email_field).text.toString()
-            val password = view.findViewById<EditText>(R.id.password_field).text.toString()
-            authPresenter.getSignUpObservable(authComponent, email, password)
-                .subscribe(object: SingleObserver<AuthResult> {
+            authPresenter.getSignInObservable(email, password)
+                .subscribe(object : SingleObserver<AuthResult> {
                     override fun onSubscribe(d: Disposable) {
                         disposables.add(d)
                     }
@@ -86,8 +69,7 @@ class AuthFragment: MvpAppCompatFragment(), AuthView {
                     override fun onSuccess(t: AuthResult) {
                         if (t.user != null) {
                             authPresenter.displayProfile(true, fm)
-                        }
-                        else {
+                        } else {
                             authPresenter.displayProfile(false, fm)
                         }
                         disposables.clear()
@@ -95,7 +77,43 @@ class AuthFragment: MvpAppCompatFragment(), AuthView {
                     }
 
                     override fun onError(e: Throwable) {
-                        Toast.makeText(requireContext(), "Не удалось зарегистрироваться", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Неверный логин или пароль",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.e("afObserver", "subscription fail")
+                        e.stackTrace
+                    }
+
+                })
+        }
+
+        val regListener = OnClickListener {
+            val email = view.findViewById<EditText>(R.id.email_field).text.toString()
+            val password = view.findViewById<EditText>(R.id.password_field).text.toString()
+            authPresenter.getSignUpObservable(email, password)
+                .subscribe(object : SingleObserver<AuthResult> {
+                    override fun onSubscribe(d: Disposable) {
+                        disposables.add(d)
+                    }
+
+                    override fun onSuccess(t: AuthResult) {
+                        if (t.user != null) {
+                            authPresenter.displayProfile(true, fm)
+                        } else {
+                            authPresenter.displayProfile(false, fm)
+                        }
+                        disposables.clear()
+                        view.af_loadingScreen.visibility = GONE
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Не удалось зарегистрироваться",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         Log.e("afObserver", "subscription fail")
                         e.stackTrace
                     }
@@ -118,7 +136,7 @@ class AuthFragment: MvpAppCompatFragment(), AuthView {
     override fun showProfile(authResult: Boolean, fm: FragmentManager) {
         if (authResult) {
             fm.popBackStack()
-            authPresenter.showFragment(fmComponent, ProfileFragment(), fm)
+            authPresenter.showFragment(ProfileFragment(), fm)
         } else {
             Toast.makeText(
                 activity?.applicationContext,

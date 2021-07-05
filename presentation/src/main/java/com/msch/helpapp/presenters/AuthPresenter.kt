@@ -11,25 +11,22 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class AuthPresenter: MvpPresenter<AuthView>() {
+class AuthPresenter @Inject constructor(private var fmComponent: FragmentManagerComponent, private var fbOpsComponent: FirebaseComponent) : MvpPresenter<AuthView>() {
     fun displayProfile(authResult: Boolean, fm: FragmentManager) {
         viewState.showProfile(authResult, fm)
         return
     }
 
-    @Inject
-    fun showFragment(fmComponent: FragmentManagerComponent,fragment: Fragment, fm: FragmentManager) {
+    fun showFragment(fragment: Fragment, fm: FragmentManager) {
         fmComponent.getFragmentManager().fm().openFragment(fragment, fm)
         return
     }
 
-    @Inject
-    fun getSignInObservable(fbOpsComponent: FirebaseComponent, email: String, password: String): Single<AuthResult> {
+    fun getSignInObservable(email: String, password: String): Single<AuthResult> {
         return fbOpsComponent.provideFbOps().fbOps().getLoginObservable(email, password)
     }
 
-    @Inject
-    fun getSignUpObservable(fbOpsComponent: FirebaseComponent,email: String, password: String): Single<AuthResult> {
+    fun getSignUpObservable(email: String, password: String): Single<AuthResult> {
         return fbOpsComponent.provideFbOps().fbOps().getRegisterObservable(email, password)
     }
 }

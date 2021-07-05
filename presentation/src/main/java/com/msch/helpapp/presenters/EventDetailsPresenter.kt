@@ -9,14 +9,14 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class EventDetailsPresenter: MvpPresenter<EventDetailsView>() {
+class EventDetailsPresenter @Inject constructor(private val edComponent: DataComponent): MvpPresenter<EventDetailsView>() {
     fun displayEvents(events: List<EventDetails>) {
         viewState.displayEvents(events)
         return
     }
 
     @Inject
-    fun getObservable(edComponent: DataComponent): Single<List<EventDetails>> {
+    fun getObservable(): Single<List<EventDetails>> {
         return edComponent.getEDComponent().eventDetailsDS().getEdObservable()
     }
 }
