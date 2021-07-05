@@ -22,15 +22,20 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_auth_screen.view.*
 import moxy.MvpAppCompatFragment
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
 class AuthFragment : MvpAppCompatFragment(), AuthView {
     private val disposables = CompositeDisposable()
 
+    @field:InjectPresenter
+    @get:ProvidePresenter
     @Inject
     lateinit var authPresenter: AuthPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Log.d("presenter:",authPresenter.toString())
         if(!::authPresenter.isInitialized) {
             DaggerFirebaseComponent
                 .builder()
@@ -44,7 +49,6 @@ class AuthFragment : MvpAppCompatFragment(), AuthView {
                 .build()
                 .inject(this)
         }
-        //Log.d("presenter:",authPresenter.toString())
         super.onCreate(savedInstanceState)
     }
 
