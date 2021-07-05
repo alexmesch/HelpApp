@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.msch.domain.model.UserProfile
 import com.msch.helpapp.R
@@ -14,7 +13,7 @@ import com.msch.helpapp.presenters.UserPresenter
 import com.msch.helpapp.views.UserView
 import com.msch.helpapp.adapters.FriendsAdapter
 import com.msch.helpapp.dagger.components.DaggerDataComponent
-import com.msch.helpapp.dagger.components.DaggerFragmentManagerComponent
+import com.msch.helpapp.dagger.modules.UserInfoModule
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -23,18 +22,25 @@ import kotlinx.android.synthetic.main.fragment_profile_screen.view.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
 
 class ProfileFragment : MvpAppCompatFragment(), UserView {
     private var disposables = CompositeDisposable()
-    private val fmComponent = DaggerFragmentManagerComponent.create()
-    private val udComponent = DaggerDataComponent.create()
 
-    @InjectPresenter(presenterId = "profilePresenter")
+    @field: InjectPresenter
+    @get: ProvidePresenter
+    @Inject
     lateinit var profilePresenter: UserPresenter
 
-    @ProvidePresenter
-    fun providePresenter(): UserPresenter {
-        return UserPresenter()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        if (!::profilePresenter.isInitialized) {
+            DaggerDataComponent
+                .builder()
+                .userInfoModule(UserInfoModule())
+                .build()
+                .inject(this)
+        }
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -43,9 +49,7 @@ class ProfileFragment : MvpAppCompatFragment(), UserView {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile_screen, container, false)
-        providePresenter()
-
-        profilePresenter.getObservable(udComponent)
+        profilePresenter.getObservable()
             .subscribe(object: SingleObserver<UserProfile> {
             override fun onSubscribe(d: Disposable) {
                 disposables.add(d)
@@ -62,7 +66,7 @@ class ProfileFragment : MvpAppCompatFragment(), UserView {
                 e.stackTrace
             }
         })
-        view.pf_logout_button.setOnClickListener{ (profilePresenter.logOut(fmComponent, requireActivity().supportFragmentManager))}
+        view.pf_logout_button.setOnClickListener{ (profilePresenter.logOut(requireActivity().supportFragmentManager))}
         return view
     }
 

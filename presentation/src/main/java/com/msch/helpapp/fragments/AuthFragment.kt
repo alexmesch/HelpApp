@@ -34,7 +34,7 @@ class AuthFragment : MvpAppCompatFragment(), AuthView {
     lateinit var authPresenter: AuthPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if(!::authPresenter.isInitialized) {
+        if (!::authPresenter.isInitialized) {
             DaggerFirebaseComponent
                 .builder()
                 .firebaseModule(FirebaseModule())
@@ -52,7 +52,6 @@ class AuthFragment : MvpAppCompatFragment(), AuthView {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_auth_screen, container, false)
         val fm = requireActivity().supportFragmentManager
-        //Log.d("presenter onCreateView:",authPresenter.toString())
 
         val loginListener = OnClickListener {
             val email = view.findViewById<EditText>(R.id.email_field).text.toString()

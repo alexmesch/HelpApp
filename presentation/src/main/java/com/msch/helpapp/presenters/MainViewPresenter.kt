@@ -5,18 +5,16 @@ import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.msch.helpapp.dagger.components.DaggerFragmentManagerComponent
-import com.msch.helpapp.dagger.components.FragmentManagerComponent
+import com.msch.helpapp.fragments.FragmentsManager
 import com.msch.helpapp.views.FragmentView
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class MainViewPresenter: MvpPresenter<FragmentView>() {
-    @Inject
-    fun showFragment(fmComponent: FragmentManagerComponent, fragment: Fragment, fm: FragmentManager) {
-        fmComponent.getFragmentManager().fm().openFragment(fragment, fm)
+class MainViewPresenter @Inject constructor(private var fragmentManager: FragmentsManager): MvpPresenter<FragmentView>() {
+    fun showFragment(fragment: Fragment, fm: FragmentManager) {
+        fragmentManager.openFragment(fragment, fm)
         return
     }
 

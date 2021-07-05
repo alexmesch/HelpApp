@@ -20,11 +20,15 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.ac_event_details.*
 import moxy.MvpAppCompatActivity
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
 class EventDetailsActivity : MvpAppCompatActivity(), EventDetailsView {
     private var disposables = CompositeDisposable()
 
+    @field: InjectPresenter
+    @get: ProvidePresenter
     @Inject
     lateinit var edPresenter: EventDetailsPresenter
 
@@ -37,6 +41,7 @@ class EventDetailsActivity : MvpAppCompatActivity(), EventDetailsView {
             .inject(this)
 
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.ac_event_details)
         val view: View = this.findViewById(android.R.id.content)
 

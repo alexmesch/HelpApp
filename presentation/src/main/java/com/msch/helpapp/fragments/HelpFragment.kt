@@ -15,17 +15,33 @@ import com.msch.helpapp.presenters.HelpPresenter
 import com.msch.helpapp.views.HelpView
 import com.msch.helpapp.adapters.CategoryViewAdapter
 import com.msch.helpapp.dagger.components.DaggerDataComponent
+import com.msch.helpapp.dagger.modules.CategoryItemsModule
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
 
 class HelpFragment: MvpAppCompatFragment(), HelpView {
     private var disposables = CompositeDisposable()
 
-    @InjectPresenter(presenterId = "helpPresenter")
+    @field: InjectPresenter
+    @get: ProvidePresenter
+    @Inject
     lateinit var helpPresenter: HelpPresenter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        if (!::helpPresenter.isInitialized) {
+            DaggerDataComponent
+                .builder()
+                .categoryItemsModule(CategoryItemsModule())
+                .build()
+                .inject(this)
+        }
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,13 +50,12 @@ class HelpFragment: MvpAppCompatFragment(), HelpView {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_help_screen, container, false)
 
-        helpPresenter.getObservable(DaggerDataComponent.create()).subscribe(object : SingleObserver<List<CategoryItems>> {
+        helpPresenter.getObservable().subscribe(object : SingleObserver<List<CategoryItems>> {
             override fun onSubscribe(d: Disposable) {
                 disposables.add(d)
             }
 
             override fun onSuccess(t: List<CategoryItems>) {
-                Log.d("hf", t.toString())
                 helpPresenter.showCategories(t)
                 switchLoadingScreen(view)
                 disposables.clear()

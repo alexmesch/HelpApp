@@ -14,6 +14,7 @@ import com.msch.helpapp.presenters.NewsPresenter
 import com.msch.helpapp.views.NewsView
 import com.msch.helpapp.adapters.NewsAdapter
 import com.msch.helpapp.dagger.components.DaggerDataComponent
+import com.msch.helpapp.dagger.modules.EventDetailsModule
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -21,18 +22,26 @@ import kotlinx.android.synthetic.main.fragment_news_screen.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import javax.inject.Inject
 
 class NewsFragment : MvpAppCompatFragment(), NewsView {
     private val id = "categoryID"
     private val disposables = CompositeDisposable()
-    private val edComponent = DaggerDataComponent.create()
 
-    @InjectPresenter
+    @field: InjectPresenter
+    @get: ProvidePresenter
+    @Inject
     lateinit var newsPresenter: NewsPresenter
 
-    @ProvidePresenter
-    fun providePresenter(): NewsPresenter {
-        return NewsPresenter()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        if (!::newsPresenter.isInitialized) {
+            DaggerDataComponent
+                .builder()
+                .eventDetailsModule(EventDetailsModule())
+                .build()
+                .inject(this)
+        }
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -43,9 +52,7 @@ class NewsFragment : MvpAppCompatFragment(), NewsView {
         val view = inflater.inflate(R.layout.fragment_news_screen, container, false)
         val filter = arguments?.getString(id).toString()
 
-        providePresenter()
-
-        newsPresenter.getObservable(edComponent).subscribe(object: SingleObserver<List<EventDetails>> {
+        newsPresenter.getObservable().subscribe(object: SingleObserver<List<EventDetails>> {
             override fun onSubscribe(d: Disposable) {
                 disposables.add(d)
             }

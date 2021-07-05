@@ -3,22 +3,25 @@ package com.msch.helpapp.presenters
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.msch.data.datasource.UserInfoDS
 import com.msch.domain.model.UserProfile
-import com.msch.helpapp.dagger.components.*
 import com.msch.helpapp.views.UserView
 import com.msch.helpapp.fragments.AuthFragment
+import com.msch.helpapp.fragments.FragmentsManager
 import io.reactivex.Single
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class UserPresenter: MvpPresenter<UserView>() {
-    @Inject
-    fun logOut(fmComponent: FragmentManagerComponent, fm: FragmentManager) {
+class UserPresenter @Inject constructor(
+    private var fragmentManager: FragmentsManager,
+    private var ud: UserInfoDS
+) : MvpPresenter<UserView>() {
+    fun logOut(fm: FragmentManager) {
         Firebase.auth.signOut()
         fm.popBackStack()
-        fmComponent.getFragmentManager().fm().openFragment(AuthFragment(), fm)
+        fragmentManager.openFragment(AuthFragment(), fm)
     }
 
     fun showProfile(profile: UserProfile) {
@@ -26,8 +29,7 @@ class UserPresenter: MvpPresenter<UserView>() {
         return
     }
 
-    @Inject
-    fun getObservable(udComponent: DataComponent): Single<UserProfile> {
-        return udComponent.getUDComponent().userInfoDS().getUserObservable(Firebase.auth.currentUser!!.uid)
+    fun getObservable(): Single<UserProfile> {
+        return ud.getUserObservable(Firebase.auth.currentUser!!.uid)
     }
 }
