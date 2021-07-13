@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.msch.domain.model.EventDetails
-import com.msch.data.datasource.TimeWorks.calculateEstimatedTime
+import com.msch.data.repository.datasource.TimeWorks.calculateEstimatedTime
 import com.msch.helpapp.adapters.EdFriendsAdapter
 import com.msch.helpapp.adapters.EdImagesAdapter
 import com.msch.helpapp.dagger.components.DaggerDataComponent

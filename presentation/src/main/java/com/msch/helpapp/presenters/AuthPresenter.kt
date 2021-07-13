@@ -3,7 +3,7 @@ package com.msch.helpapp.presenters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.AuthResult
-import com.msch.data.datasource.FirebaseOps
+import com.msch.data.network.FirebaseOps
 import com.msch.helpapp.fragments.FragmentsManager
 import com.msch.helpapp.views.AuthView
 import io.reactivex.Single
@@ -15,7 +15,8 @@ import javax.inject.Inject
 class AuthPresenter
 @Inject constructor(
     private var fragmentManager: FragmentsManager,
-    private var fbOps: FirebaseOps) : MvpPresenter<AuthView>() {
+    private var fbOps: FirebaseOps
+) : MvpPresenter<AuthView>() {
 
     fun displayProfile(authResult: Boolean, fm: FragmentManager) {
         viewState.showProfile(authResult, fm)

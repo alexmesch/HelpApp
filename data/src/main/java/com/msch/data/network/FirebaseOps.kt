@@ -1,4 +1,4 @@
-package com.msch.data.datasource
+package com.msch.data.network
 
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.ktx.auth

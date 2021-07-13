@@ -1,6 +1,6 @@
 package com.msch.helpapp.presenters
 
-import com.msch.data.datasource.EventDetailsDS
+import com.msch.domain.interactor.GetEventsUseCase
 import com.msch.domain.model.EventDetails
 import com.msch.helpapp.views.EventDetailsView
 import io.reactivex.Single
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @InjectViewState
 class EventDetailsPresenter
-@Inject constructor(private var ed: EventDetailsDS):
+@Inject constructor(private val ed: GetEventsUseCase):
     MvpPresenter<EventDetailsView>() {
     fun displayEvents(events: List<EventDetails>) {
         viewState.displayEvents(events)
@@ -18,6 +18,6 @@ class EventDetailsPresenter
     }
 
     fun getObservable(): Single<List<EventDetails>> {
-        return ed.getEdObservable()
+        return ed.execute()
     }
 }

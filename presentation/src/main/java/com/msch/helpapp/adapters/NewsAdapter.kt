@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.msch.data.datasource.TimeWorks.calculateEstimatedTime
+import com.msch.data.repository.datasource.TimeWorks.calculateEstimatedTime
 import com.msch.helpapp.EventDetailsActivity
 import com.msch.helpapp.R
 import kotlinx.android.synthetic.main.nf_recycler_item.view.*

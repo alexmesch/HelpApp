@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.msch.data.datasource.SearchResultsDS
+import com.msch.data.repository.datasource.SearchResultsDS
 import com.msch.helpapp.R
 import com.msch.helpapp.adapters.SearchEventsAdapter
 import kotlinx.android.synthetic.main.sf_viewpager_events_fragment.view.*

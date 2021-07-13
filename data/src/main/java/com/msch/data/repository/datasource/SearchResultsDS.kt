@@ -1,4 +1,4 @@
-package com.msch.data.datasource
+package com.msch.data.repository.datasource
 
 import com.msch.domain.model.SearchInfo
 

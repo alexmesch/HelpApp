@@ -3,7 +3,7 @@ package com.msch.helpapp.presenters
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.msch.data.datasource.UserInfoDS
+import com.msch.domain.interactor.GetUsersUseCase
 import com.msch.domain.model.UserProfile
 import com.msch.helpapp.views.UserView
 import com.msch.helpapp.fragments.AuthFragment
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @InjectViewState
 class UserPresenter @Inject constructor(
     private var fragmentManager: FragmentsManager,
-    private var ud: UserInfoDS
+    private var ud: GetUsersUseCase
 ) : MvpPresenter<UserView>() {
     fun logOut(fm: FragmentManager) {
         Firebase.auth.signOut()
@@ -30,6 +30,6 @@ class UserPresenter @Inject constructor(
     }
 
     fun getObservable(): Single<UserProfile> {
-        return ud.getUserObservable(Firebase.auth.currentUser!!.uid)
+        return ud.execute(Firebase.auth.currentUser!!.uid)
     }
 }

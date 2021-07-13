@@ -1,6 +1,7 @@
 package com.msch.helpapp.dagger.modules
 
-import com.msch.data.datasource.UserInfoDS
+import com.msch.data.repository.DataRepositoryImpl
+import com.msch.domain.interactor.GetUsersUseCase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject
@@ -10,7 +11,7 @@ import javax.inject.Singleton
 class UserInfoModule @Inject constructor() {
     @Provides
     @Singleton
-    fun userInfoDS(): UserInfoDS {
-        return UserInfoDS()
+    fun userInfoDS(): GetUsersUseCase {
+        return GetUsersUseCase(DataRepositoryImpl())
     }
 }
