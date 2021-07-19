@@ -10,7 +10,7 @@ import javax.inject.Singleton
 class FirebaseModule @Inject constructor() {
     @Provides
     @Singleton
-    fun fbOps(): FirebaseOps {
+    fun getFirebaseOps(): FirebaseOps {
         return FirebaseOps()
     }
 }

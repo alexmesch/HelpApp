@@ -1,12 +1,12 @@
 package com.msch.helpapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.msch.domain.model.CategoryItems
@@ -14,31 +14,27 @@ import com.msch.helpapp.*
 import com.msch.helpapp.presenters.HelpPresenter
 import com.msch.helpapp.views.HelpView
 import com.msch.helpapp.adapters.CategoryViewAdapter
-import com.msch.helpapp.dagger.components.DaggerDataComponent
 import com.msch.helpapp.dagger.modules.CategoryItemsModule
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
 class HelpFragment: MvpAppCompatFragment(), HelpView {
-    private var disposables = CompositeDisposable()
 
     @field: InjectPresenter
     @get: ProvidePresenter
     @Inject
     lateinit var helpPresenter: HelpPresenter
+    private val adapter = CategoryViewAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!::helpPresenter.isInitialized) {
-            DaggerDataComponent
+            /*DaggerDataComponent
                 .builder()
                 .categoryItemsModule(CategoryItemsModule())
                 .build()
-                .inject(this)
+                .inject(this)*/
         }
         super.onCreate(savedInstanceState)
     }
@@ -49,33 +45,29 @@ class HelpFragment: MvpAppCompatFragment(), HelpView {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_help_screen, container, false)
+        adapter.setListener(object: CategoryViewAdapter.AdapterListener {
+            override fun onItemClicked(position: Int, clickedId: Bundle) {
+                val newsFragment = NewsFragment()
+                newsFragment.arguments = clickedId
 
-        helpPresenter.getObservable().subscribe(object : SingleObserver<List<CategoryItems>> {
-            override fun onSubscribe(d: Disposable) {
-                disposables.add(d)
-            }
-
-            override fun onSuccess(t: List<CategoryItems>) {
-                helpPresenter.showCategories(t)
-                switchLoadingScreen(view)
-                disposables.clear()
-            }
-
-            override fun onError(e: Throwable) {
-                Log.e("HelpFragmentSubscriber", "subscription fail!")
-                e.stackTrace
+                val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragmentView, newsFragment)
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.addToBackStack(null)
+                transaction.commit()
             }
         })
+
+        helpPresenter.showCategories()
+        switchLoadingScreen(view)
         return view
     }
 
     override fun displayCategories(categoryItems: List<CategoryItems>) {
-        val categoryAdapter = CategoryViewAdapter()
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recycler_view)
-
-        recyclerView?.adapter = categoryAdapter
+        recyclerView?.adapter = adapter
         recyclerView?.layoutManager = GridLayoutManager(requireActivity(), 2)
-        categoryAdapter.submitList(categoryItems)
+        adapter.submitList(categoryItems)
     }
 
     private fun switchLoadingScreen(view: View) {

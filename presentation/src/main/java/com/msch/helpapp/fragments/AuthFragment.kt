@@ -1,7 +1,6 @@
 package com.msch.helpapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -9,16 +8,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
-import com.google.firebase.auth.AuthResult
 import com.msch.helpapp.R
-import com.msch.helpapp.dagger.components.DaggerFirebaseComponent
 import com.msch.helpapp.dagger.modules.FirebaseModule
-import com.msch.helpapp.dagger.modules.FragmentManagerModule
+import com.msch.helpapp.dagger.modules.NavigationModule
 import com.msch.helpapp.presenters.AuthPresenter
 import com.msch.helpapp.views.AuthView
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_auth_screen.view.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
@@ -26,7 +20,6 @@ import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
 class AuthFragment : MvpAppCompatFragment(), AuthView {
-    private val disposables = CompositeDisposable()
 
     @field:InjectPresenter
     @get:ProvidePresenter
@@ -35,12 +28,12 @@ class AuthFragment : MvpAppCompatFragment(), AuthView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!::authPresenter.isInitialized) {
-            DaggerFirebaseComponent
+            /*DaggerFirebaseComponent
                 .builder()
                 .firebaseModule(FirebaseModule())
-                .fragmentManagerModule(FragmentManagerModule())
+                .fragmentManagerModule(NavigationModule())
                 .build()
-                .inject(this)
+                .inject(this)*/
         }
         super.onCreate(savedInstanceState)
     }
@@ -56,65 +49,15 @@ class AuthFragment : MvpAppCompatFragment(), AuthView {
         val loginListener = OnClickListener {
             val email = view.findViewById<EditText>(R.id.email_field).text.toString()
             val password = view.findViewById<EditText>(R.id.password_field).text.toString()
-            authPresenter.getSignInObservable(email, password)
-                .subscribe(object : SingleObserver<AuthResult> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
-
-                    override fun onSuccess(t: AuthResult) {
-                        if (t.user != null) {
-                            authPresenter.displayProfile(true, fm)
-                        } else {
-                            authPresenter.displayProfile(false, fm)
-                        }
-                        disposables.clear()
-                        view.af_loadingScreen.visibility = GONE
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Неверный логин или пароль",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e("afObserver", "subscription fail")
-                        e.stackTrace
-                    }
-
-                })
+            authPresenter.login(email, password, fm)
+            view.af_loadingScreen.visibility = GONE
         }
 
         val regListener = OnClickListener {
             val email = view.findViewById<EditText>(R.id.email_field).text.toString()
             val password = view.findViewById<EditText>(R.id.password_field).text.toString()
-            authPresenter.getSignUpObservable(email, password)
-                .subscribe(object : SingleObserver<AuthResult> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposables.add(d)
-                    }
-
-                    override fun onSuccess(t: AuthResult) {
-                        if (t.user != null) {
-                            authPresenter.displayProfile(true, fm)
-                        } else {
-                            authPresenter.displayProfile(false, fm)
-                        }
-                        disposables.clear()
-                        view.af_loadingScreen.visibility = GONE
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Не удалось зарегистрироваться",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e("afObserver", "subscription fail")
-                        e.stackTrace
-                    }
-
-                })
+            authPresenter.register(email, password, fm)
+            view.af_loadingScreen.visibility = GONE
         }
 
         view.login_btn.setOnClickListener(loginListener)

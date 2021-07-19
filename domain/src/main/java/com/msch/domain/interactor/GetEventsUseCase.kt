@@ -6,6 +6,6 @@ import io.reactivex.Single
 
 class GetEventsUseCase (private val repo: DataRepository) {
     fun execute(): Single<List<EventDetails>> {
-        return repo.getEventsDS()
+        return repo.getEventsSingle()
     }
 }

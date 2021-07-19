@@ -18,7 +18,7 @@ class DataRepositoryImpl : DataRepository {
     private val fbEventPath = "RealmEvents"
     private val fbUsersPath = "users"
 
-    override fun getCategoriesDS(): Single<List<CategoryItems>> {
+    override fun getCategoriesSingle(): Single<List<CategoryItems>> {
         return RxFirebaseDatabase.observeSingleValueEvent(
             fbRef.child(fbCatPath),
             DataSnapshotMapper.listOf(CategoryItems::class.java)
@@ -28,7 +28,7 @@ class DataRepositoryImpl : DataRepository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getEventsDS(): Single<List<EventDetails>> {
+    override fun getEventsSingle(): Single<List<EventDetails>> {
         return RxFirebaseDatabase.observeSingleValueEvent(
             fbRef.child(fbEventPath),
             DataSnapshotMapper.listOf(EventDetails::class.java)
@@ -38,7 +38,7 @@ class DataRepositoryImpl : DataRepository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getUserDS(userID: String): Single<UserProfile> {
+    override fun getUserSingle(userID: String): Single<UserProfile> {
         return RxFirebaseDatabase.observeSingleValueEvent(
             fbRef.child(fbUsersPath).child(userID), DataSnapshotMapper.of(UserProfile::class.java))
             .toSingle()

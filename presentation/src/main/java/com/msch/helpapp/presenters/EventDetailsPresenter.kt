@@ -17,7 +17,7 @@ class EventDetailsPresenter
         return
     }
 
-    fun getObservable(): Single<List<EventDetails>> {
+    fun getEventsSingle(): Single<List<EventDetails>> {
         return ed.execute()
     }
 }

@@ -11,7 +11,7 @@ import javax.inject.Singleton
 class UserInfoModule @Inject constructor() {
     @Provides
     @Singleton
-    fun userInfoDS(): GetUsersUseCase {
+    fun getUserInfoUseCase(): GetUsersUseCase {
         return GetUsersUseCase(DataRepositoryImpl())
     }
 }

@@ -8,12 +8,12 @@ import io.reactivex.Single
 
 
 class FirebaseOps {
-    fun getLoginObservable(email: String, password: String): Single<AuthResult> {
+    fun getLoginSingle(email: String, password: String): Single<AuthResult> {
         return RxFirebaseAuth.signInWithEmailAndPassword(Firebase.auth, email, password)
             .toSingle()
     }
 
-    fun getRegisterObservable(email: String, password: String): Single<AuthResult> {
+    fun getRegisterSingle(email: String, password: String): Single<AuthResult> {
         return RxFirebaseAuth.createUserWithEmailAndPassword(Firebase.auth, email, password)
             .toSingle()
     }

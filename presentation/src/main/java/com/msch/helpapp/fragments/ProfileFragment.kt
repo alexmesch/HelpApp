@@ -1,7 +1,6 @@
 package com.msch.helpapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -12,11 +11,7 @@ import com.msch.helpapp.R
 import com.msch.helpapp.presenters.UserPresenter
 import com.msch.helpapp.views.UserView
 import com.msch.helpapp.adapters.FriendsAdapter
-import com.msch.helpapp.dagger.components.DaggerDataComponent
 import com.msch.helpapp.dagger.modules.UserInfoModule
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_profile_screen.*
 import kotlinx.android.synthetic.main.fragment_profile_screen.view.*
 import moxy.MvpAppCompatFragment
@@ -25,20 +20,19 @@ import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
 class ProfileFragment : MvpAppCompatFragment(), UserView {
-    private var disposables = CompositeDisposable()
 
     @field: InjectPresenter
     @get: ProvidePresenter
     @Inject
-    lateinit var profilePresenter: UserPresenter
+    lateinit var userPresenter: UserPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!::profilePresenter.isInitialized) {
-            DaggerDataComponent
+        if (!::userPresenter.isInitialized) {
+            /*DaggerDataComponent
                 .builder()
                 .userInfoModule(UserInfoModule())
                 .build()
-                .inject(this)
+                .inject(this)*/
         }
         super.onCreate(savedInstanceState)
     }
@@ -49,24 +43,9 @@ class ProfileFragment : MvpAppCompatFragment(), UserView {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile_screen, container, false)
-        profilePresenter.getObservable()
-            .subscribe(object: SingleObserver<UserProfile> {
-            override fun onSubscribe(d: Disposable) {
-                disposables.add(d)
-            }
-
-            override fun onSuccess(t: UserProfile) {
-                profilePresenter.showProfile(t)
-                disposables.clear()
-                view.pf_loading_screen.visibility = GONE
-            }
-
-            override fun onError(e: Throwable) {
-                Log.e("pfObserver", "subscription fail!")
-                e.stackTrace
-            }
-        })
-        view.pf_logout_button.setOnClickListener{ (profilePresenter.logOut(requireActivity().supportFragmentManager))}
+        userPresenter.showProfile()
+        view.pf_loading_screen.visibility = GONE
+        view.pf_logout_button.setOnClickListener{ (userPresenter.logOut(requireActivity().supportFragmentManager))}
         return view
     }
 

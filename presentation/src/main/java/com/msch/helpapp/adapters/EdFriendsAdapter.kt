@@ -18,7 +18,7 @@ class EdFriendsAdapter : RecyclerView.Adapter<EdFriendsAdapter.ImagesViewHolder>
         fun bind(imageItem: List<String>, context: Context) {
             edfImage.setImageResource(
                 context.resources.getIdentifier(
-                    imageItem[position],
+                    imageItem[adapterPosition],
                     "drawable",
                     context.packageName
                 )

@@ -16,7 +16,7 @@ class EdImagesAdapter : RecyclerView.Adapter<EdImagesAdapter.ImagesViewHolder>()
         private val edImage = itemView.ed_image
 
         fun bind(imageItem: List<String?>) {
-            Picasso.get().load(imageItem[position]).into(edImage)
+            Picasso.get().load(imageItem[adapterPosition]).into(edImage)
         }
     }
 

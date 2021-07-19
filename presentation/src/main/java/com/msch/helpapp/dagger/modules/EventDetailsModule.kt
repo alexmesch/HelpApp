@@ -11,7 +11,7 @@ import javax.inject.Singleton
 class EventDetailsModule @Inject constructor() {
     @Provides
     @Singleton
-    fun eventDetailsDS(): GetEventsUseCase{
+    fun getEventDetailsUseCase(): GetEventsUseCase{
         return GetEventsUseCase(DataRepositoryImpl())
     }
 }

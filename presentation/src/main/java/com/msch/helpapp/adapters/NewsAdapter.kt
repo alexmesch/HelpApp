@@ -1,18 +1,27 @@
 package com.msch.helpapp.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.msch.data.repository.datasource.TimeWorks.calculateEstimatedTime
-import com.msch.helpapp.EventDetailsActivity
+import com.msch.domain.model.EventDetails
 import com.msch.helpapp.R
 import kotlinx.android.synthetic.main.nf_recycler_item.view.*
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
-    private var items: List<com.msch.domain.model.EventDetails> = ArrayList()
+    private var items: List<EventDetails> = ArrayList()
+
+    private var listener: AdapterListener? = null
+
+    interface AdapterListener {
+        fun onItemClicked(id: String?)
+    }
+
+    fun setListener(listener: AdapterListener?) {
+        this.listener = listener
+    }
 
     inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val eventTitle = itemView.nfi_event_title
@@ -22,13 +31,11 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
         init {
             itemView.setOnClickListener {
-                val intent = Intent(itemView.context, EventDetailsActivity::class.java)
-                intent.putExtra("ID", items[position].eventId)
-                itemView.context.startActivity(intent)
+                listener?.onItemClicked(items[adapterPosition].eventId)
             }
         }
 
-        fun bind(newsItem: com.msch.domain.model.EventDetails, context: Context) {
+        fun bind(newsItem: EventDetails, context: Context) {
             eventTitle.text = newsItem.eventName
             eventPic.setImageResource(
                 context.resources.getIdentifier(
@@ -56,7 +63,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         return items.size
     }
 
-    fun submitList(newsList: List<com.msch.domain.model.EventDetails>) {
+    fun submitList(newsList: List<EventDetails>) {
         items = newsList
     }
 }

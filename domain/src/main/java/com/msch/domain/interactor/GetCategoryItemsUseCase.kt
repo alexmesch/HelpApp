@@ -6,6 +6,6 @@ import io.reactivex.Single
 
 class GetCategoryItemsUseCase (private val repo: DataRepository){
     fun execute(): Single<List<CategoryItems>> {
-        return repo.getCategoriesDS()
+        return repo.getCategoriesSingle()
     }
 }

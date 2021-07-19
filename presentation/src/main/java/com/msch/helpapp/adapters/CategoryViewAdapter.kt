@@ -5,17 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.msch.helpapp.R
-import com.msch.helpapp.fragments.NewsFragment
 import kotlinx.android.synthetic.main.hf_recycler_item.view.*
 
 class CategoryViewAdapter : RecyclerView.Adapter<CategoryViewAdapter.CategoryViewHolder>() {
     private var items: List<com.msch.domain.model.CategoryItems> = ArrayList()
     private val catId = "categoryID"
+
+    private var listener: AdapterListener? = null
+
+    interface AdapterListener {
+        fun onItemClicked(position: Int, clickedId: Bundle)
+    }
+
+    fun setListener(listener: AdapterListener?) {
+        this.listener = listener
+    }
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val categoryImage = itemView.category_image
@@ -23,18 +29,10 @@ class CategoryViewAdapter : RecyclerView.Adapter<CategoryViewAdapter.CategoryVie
 
         init {
             itemView.setOnClickListener {
-                val newsFragment: Fragment = NewsFragment()
                 val passInfo = Bundle()
-                val fragmentManager = (itemView.context as AppCompatActivity).supportFragmentManager
+                passInfo.putString(catId, items[adapterPosition].categoryName)
 
-                passInfo.putString(catId, items[position].categoryName)
-                newsFragment.arguments = passInfo
-
-                val transaction: FragmentTransaction = fragmentManager.beginTransaction()
-                transaction.replace(R.id.fragmentView, newsFragment)
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                transaction.addToBackStack(null)
-                transaction.commit()
+                listener?.onItemClicked(adapterPosition, passInfo)
             }
         }
 

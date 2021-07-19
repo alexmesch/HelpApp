@@ -11,7 +11,6 @@ import com.msch.domain.model.EventDetails
 import com.msch.data.repository.datasource.TimeWorks.calculateEstimatedTime
 import com.msch.helpapp.adapters.EdFriendsAdapter
 import com.msch.helpapp.adapters.EdImagesAdapter
-import com.msch.helpapp.dagger.components.DaggerDataComponent
 import com.msch.helpapp.dagger.modules.EventDetailsModule
 import com.msch.helpapp.presenters.EventDetailsPresenter
 import com.msch.helpapp.views.EventDetailsView
@@ -34,11 +33,11 @@ class EventDetailsActivity : MvpAppCompatActivity(), EventDetailsView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        DaggerDataComponent
+        /*DaggerDataComponent
             .builder()
             .eventDetailsModule(EventDetailsModule())
             .build()
-            .inject(this)
+            .inject(this)*/
 
         super.onCreate(savedInstanceState)
 
@@ -47,7 +46,7 @@ class EventDetailsActivity : MvpAppCompatActivity(), EventDetailsView {
 
         view.findViewById<Button>(R.id.ed_back_btn).setOnClickListener{finishActivity(view)}
 
-        edPresenter.getObservable().subscribe(object: SingleObserver<List<EventDetails>> {
+        edPresenter.getEventsSingle().subscribe(object: SingleObserver<List<EventDetails>> {
             override fun onSubscribe(d: Disposable) {
                 disposables.add(d)
             }

@@ -6,6 +6,6 @@ import io.reactivex.Single
 
 class GetUsersUseCase(private val repo: DataRepository) {
     fun execute(userID: String): Single<UserProfile> {
-        return repo.getUserDS(userID)
+        return repo.getUserSingle(userID)
     }
 }

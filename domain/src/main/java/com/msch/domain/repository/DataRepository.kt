@@ -6,7 +6,7 @@ import com.msch.domain.model.UserProfile
 import io.reactivex.Single
 
 interface DataRepository {
-    fun getCategoriesDS(): Single<List<CategoryItems>>
-    fun getEventsDS(): Single<List<EventDetails>>
-    fun getUserDS(userID: String): Single<UserProfile>
+    fun getCategoriesSingle(): Single<List<CategoryItems>>
+    fun getEventsSingle(): Single<List<EventDetails>>
+    fun getUserSingle(userID: String): Single<UserProfile>
 }
