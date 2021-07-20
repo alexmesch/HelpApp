@@ -1,9 +1,5 @@
 package com.msch.helpapp.presenters
-
-import android.annotation.SuppressLint
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.AuthResult
@@ -12,7 +8,6 @@ import com.msch.helpapp.fragments.FragmentsManager
 import com.msch.helpapp.views.AuthView
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_auth_screen.view.*
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import javax.inject.Inject
@@ -32,7 +27,7 @@ class AuthPresenter
     }
 
     fun showFragment(fragment: Fragment, fm: FragmentManager) {
-        fragmentManager.openFragment(fragment, fm)
+        fragmentManager.openFragment(fragment, fm )
         return
     }
 

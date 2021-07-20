@@ -5,6 +5,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import durdinapps.rxfirebase2.RxFirebaseAuth
 import io.reactivex.Single
+import javax.inject.Inject
 
 
 class FirebaseOps {

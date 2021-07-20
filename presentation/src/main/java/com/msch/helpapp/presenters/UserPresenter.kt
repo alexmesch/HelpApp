@@ -16,25 +16,25 @@ import javax.inject.Inject
 
 @InjectViewState
 class UserPresenter @Inject constructor(
-    //private var fragmentManager: FragmentsManager,
-    //private var ud: GetUsersUseCase
+    private var fragmentManager: FragmentsManager,
+    private var ud: GetUsersUseCase
 ) : MvpPresenter<UserView>() {
 
     private var disposables = CompositeDisposable()
 
     fun showProfile() {
-        /*getUserSingle().subscribe({
+        getUserSingle().subscribe({
             displayProfile(it)
         }, {
             it.stackTrace
         })
-            .let {disposables.add(it)}*/
+            .let {disposables.add(it)}
     }
 
     fun logOut(fm: FragmentManager) {
         Firebase.auth.signOut()
         fm.popBackStack()
-        //fragmentManager.openFragment(AuthFragment(), fm)
+        fragmentManager.openFragment(AuthFragment(), fm)
     }
 
     private fun displayProfile(profile: UserProfile) {
@@ -42,9 +42,9 @@ class UserPresenter @Inject constructor(
         return
     }
 
-   /* private fun getUserSingle(): Single<UserProfile> {
+    private fun getUserSingle(): Single<UserProfile> {
         return ud.execute(Firebase.auth.currentUser!!.uid)
-    }*/
+    }
 
     override fun onDestroy() {
         super.onDestroy()

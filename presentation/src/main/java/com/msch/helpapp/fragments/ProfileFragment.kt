@@ -11,15 +11,17 @@ import com.msch.helpapp.R
 import com.msch.helpapp.presenters.UserPresenter
 import com.msch.helpapp.views.UserView
 import com.msch.helpapp.adapters.FriendsAdapter
-import com.msch.helpapp.dagger.modules.UserInfoModule
+import com.msch.helpapp.dagger.components.ActivityComponent
+import com.msch.helpapp.dagger.components.DaggerFragmentComponent
+import com.msch.helpapp.dagger.modules.InteractorModule
+import com.msch.helpapp.dagger.modules.NetworkModule
 import kotlinx.android.synthetic.main.fragment_profile_screen.*
 import kotlinx.android.synthetic.main.fragment_profile_screen.view.*
-import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
-class ProfileFragment : MvpAppCompatFragment(), UserView {
+class ProfileFragment : BaseFragment(), UserView {
 
     @field: InjectPresenter
     @get: ProvidePresenter
@@ -27,13 +29,13 @@ class ProfileFragment : MvpAppCompatFragment(), UserView {
     lateinit var userPresenter: UserPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!::userPresenter.isInitialized) {
-            /*DaggerDataComponent
-                .builder()
-                .userInfoModule(UserInfoModule())
+        if (!::userPresenter.isInitialized)
+            DaggerFragmentComponent.builder()
+                .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
+                .networkModule(NetworkModule())
+                .interactorModule(InteractorModule())
                 .build()
-                .inject(this)*/
-        }
+                .inject(this)
         super.onCreate(savedInstanceState)
     }
 

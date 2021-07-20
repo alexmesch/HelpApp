@@ -9,17 +9,18 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.msch.helpapp.R
-import com.msch.helpapp.dagger.modules.FirebaseModule
-import com.msch.helpapp.dagger.modules.NavigationModule
+import com.msch.helpapp.dagger.components.ActivityComponent
+import com.msch.helpapp.dagger.components.DaggerFragmentComponent
+import com.msch.helpapp.dagger.modules.InteractorModule
+import com.msch.helpapp.dagger.modules.NetworkModule
 import com.msch.helpapp.presenters.AuthPresenter
 import com.msch.helpapp.views.AuthView
 import kotlinx.android.synthetic.main.fragment_auth_screen.view.*
-import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
-class AuthFragment : MvpAppCompatFragment(), AuthView {
+class AuthFragment : BaseFragment(), AuthView {
 
     @field:InjectPresenter
     @get:ProvidePresenter
@@ -27,14 +28,13 @@ class AuthFragment : MvpAppCompatFragment(), AuthView {
     lateinit var authPresenter: AuthPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!::authPresenter.isInitialized) {
-            /*DaggerFirebaseComponent
-                .builder()
-                .firebaseModule(FirebaseModule())
-                .fragmentManagerModule(NavigationModule())
+        if (!::authPresenter.isInitialized)
+            DaggerFragmentComponent.builder()
+                .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
+                .networkModule(NetworkModule())
+                .interactorModule(InteractorModule())
                 .build()
-                .inject(this)*/
-        }
+                .inject(this)
         super.onCreate(savedInstanceState)
     }
 

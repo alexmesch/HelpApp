@@ -14,14 +14,19 @@ import com.msch.helpapp.R
 import com.msch.helpapp.presenters.NewsPresenter
 import com.msch.helpapp.views.NewsView
 import com.msch.helpapp.adapters.NewsAdapter
-import com.msch.helpapp.dagger.modules.EventDetailsModule
+import com.msch.helpapp.dagger.components.ActivityComponent
+import com.msch.helpapp.dagger.components.DaggerApplicationComponent
+import com.msch.helpapp.dagger.components.DaggerFragmentComponent
+import com.msch.helpapp.dagger.modules.DataModule
+import com.msch.helpapp.dagger.modules.InteractorModule
+import com.msch.helpapp.dagger.modules.NetworkModule
 import kotlinx.android.synthetic.main.fragment_news_screen.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
-class NewsFragment : MvpAppCompatFragment(), NewsView {
+class NewsFragment : BaseFragment(), NewsView {
     private val id = "categoryID"
     private val newsAdapter = NewsAdapter()
 
@@ -32,11 +37,12 @@ class NewsFragment : MvpAppCompatFragment(), NewsView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!::newsPresenter.isInitialized) {
-            /*DaggerDataComponent
-                .builder()
-                .eventDetailsModule(EventDetailsModule())
+            DaggerFragmentComponent.builder()
+                .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
+                .networkModule(NetworkModule())
+                .interactorModule(InteractorModule())
                 .build()
-                .inject(this)*/
+                .inject(this)
         }
         super.onCreate(savedInstanceState)
     }

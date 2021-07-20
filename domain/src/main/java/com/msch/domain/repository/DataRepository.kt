@@ -3,6 +3,7 @@ package com.msch.domain.repository
 import com.msch.domain.model.CategoryItems
 import com.msch.domain.model.EventDetails
 import com.msch.domain.model.UserProfile
+import dagger.Provides
 import io.reactivex.Single
 
 interface DataRepository {

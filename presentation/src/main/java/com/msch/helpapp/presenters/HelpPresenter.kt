@@ -15,7 +15,6 @@ class HelpPresenter @Inject constructor(private val useCase: GetCategoryItemsUse
     MvpPresenter<HelpView>() {
     private var disposables = CompositeDisposable()
 
-    @SuppressLint("CheckResult")
     fun showCategories() {
         getCategoriesSingle().subscribe({
             displayCategories(it)

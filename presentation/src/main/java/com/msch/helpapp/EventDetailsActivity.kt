@@ -1,7 +1,6 @@
 package com.msch.helpapp
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.widget.Button
@@ -11,34 +10,28 @@ import com.msch.domain.model.EventDetails
 import com.msch.data.repository.datasource.TimeWorks.calculateEstimatedTime
 import com.msch.helpapp.adapters.EdFriendsAdapter
 import com.msch.helpapp.adapters.EdImagesAdapter
-import com.msch.helpapp.dagger.modules.EventDetailsModule
+import com.msch.helpapp.dagger.components.ActivityComponent
+import com.msch.helpapp.dagger.components.DaggerActivityComponent
+import com.msch.helpapp.dagger.modules.NavigationModule
 import com.msch.helpapp.presenters.EventDetailsPresenter
 import com.msch.helpapp.views.EventDetailsView
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.ac_event_details.*
-import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
-class EventDetailsActivity : MvpAppCompatActivity(), EventDetailsView {
-    private var disposables = CompositeDisposable()
-
+class EventDetailsActivity : BaseActivity(), EventDetailsView {
     @field: InjectPresenter
     @get: ProvidePresenter
     @Inject
     lateinit var edPresenter: EventDetailsPresenter
+    private var activityComponent: ActivityComponent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        /*DaggerDataComponent
-            .builder()
-            .eventDetailsModule(EventDetailsModule())
-            .build()
-            .inject(this)*/
-
+        if (!::edPresenter.isInitialized) {
+            this.initializeInjector()
+            activityComponent?.inject(this)
+        }
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.ac_event_details)
@@ -46,23 +39,8 @@ class EventDetailsActivity : MvpAppCompatActivity(), EventDetailsView {
 
         view.findViewById<Button>(R.id.ed_back_btn).setOnClickListener{finishActivity(view)}
 
-        edPresenter.getEventsSingle().subscribe(object: SingleObserver<List<EventDetails>> {
-            override fun onSubscribe(d: Disposable) {
-                disposables.add(d)
-            }
-
-            override fun onSuccess(t: List<EventDetails>) {
-                edPresenter.displayEvents(t)
-                view.findViewById<FrameLayout>(R.id.ed_loadingScreen).visibility = GONE
-                disposables.clear()
-            }
-
-            override fun onError(e: Throwable) {
-                Log.e("edaObserver", "subscription fail!")
-                e.stackTrace
-            }
-
-        })
+        edPresenter.showEvents()
+        view.findViewById<FrameLayout>(R.id.ed_loadingScreen).visibility = GONE
     }
 
     private fun finishActivity(view: View) {
@@ -89,5 +67,12 @@ class EventDetailsActivity : MvpAppCompatActivity(), EventDetailsView {
         this.ed_friends_recycler.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         this.ed_friends_recycler.adapter = friendsAdapter
         event[eventPosition].eventFriends?.let { friendsAdapter.submitList(it) }
+    }
+
+    private fun initializeInjector() {
+        activityComponent = DaggerActivityComponent.builder()
+            .applicationComponent(getApplicationComponent())
+            .navigationModule(NavigationModule())
+            .build()
     }
 }

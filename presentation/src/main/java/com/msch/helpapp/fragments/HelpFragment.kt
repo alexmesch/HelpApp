@@ -14,13 +14,16 @@ import com.msch.helpapp.*
 import com.msch.helpapp.presenters.HelpPresenter
 import com.msch.helpapp.views.HelpView
 import com.msch.helpapp.adapters.CategoryViewAdapter
-import com.msch.helpapp.dagger.modules.CategoryItemsModule
-import moxy.MvpAppCompatFragment
+import com.msch.helpapp.dagger.HasComponent
+import com.msch.helpapp.dagger.components.ActivityComponent
+import com.msch.helpapp.dagger.components.DaggerFragmentComponent
+import com.msch.helpapp.dagger.components.FragmentComponent
+import com.msch.helpapp.dagger.modules.InteractorModule
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 
-class HelpFragment: MvpAppCompatFragment(), HelpView {
+class HelpFragment: BaseFragment(), HelpView {
 
     @field: InjectPresenter
     @get: ProvidePresenter
@@ -30,11 +33,11 @@ class HelpFragment: MvpAppCompatFragment(), HelpView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!::helpPresenter.isInitialized) {
-            /*DaggerDataComponent
-                .builder()
-                .categoryItemsModule(CategoryItemsModule())
+            DaggerFragmentComponent.builder()
+                .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
+                .interactorModule(InteractorModule())
                 .build()
-                .inject(this)*/
+                .inject(this)
         }
         super.onCreate(savedInstanceState)
     }

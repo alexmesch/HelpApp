@@ -13,12 +13,11 @@ import javax.inject.Inject
 
 @InjectViewState
 class MainViewPresenter @Inject constructor(
-    //private var fragmentManager: FragmentsManager
+    private var fragmentManager: FragmentsManager
     )
     : MvpPresenter<FragmentView>() {
     fun showFragment(fragment: Fragment, fm: FragmentManager) {
-        //fragmentManager.openFragment(fragment, fm)
-        FragmentsManager().openFragment(fragment, fm)
+        fragmentManager.openFragment(fragment, fm)
         return
     }
 
