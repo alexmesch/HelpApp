@@ -8,7 +8,7 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 
-class FirebaseOps {
+class FirebaseOps @Inject constructor() {
     fun getLoginSingle(email: String, password: String): Single<AuthResult> {
         return RxFirebaseAuth.signInWithEmailAndPassword(Firebase.auth, email, password)
             .toSingle()

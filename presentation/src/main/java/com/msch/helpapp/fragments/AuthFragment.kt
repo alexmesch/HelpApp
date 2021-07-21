@@ -11,8 +11,6 @@ import androidx.fragment.app.FragmentManager
 import com.msch.helpapp.R
 import com.msch.helpapp.dagger.components.ActivityComponent
 import com.msch.helpapp.dagger.components.DaggerFragmentComponent
-import com.msch.helpapp.dagger.modules.InteractorModule
-import com.msch.helpapp.dagger.modules.NetworkModule
 import com.msch.helpapp.presenters.AuthPresenter
 import com.msch.helpapp.views.AuthView
 import kotlinx.android.synthetic.main.fragment_auth_screen.view.*
@@ -31,7 +29,6 @@ class AuthFragment : BaseFragment(), AuthView {
         if (!::authPresenter.isInitialized)
             DaggerFragmentComponent.builder()
                 .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
-                .networkModule(NetworkModule())
                 .interactorModule(InteractorModule())
                 .build()
                 .inject(this)

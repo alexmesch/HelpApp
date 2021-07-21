@@ -13,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class DataRepositoryImpl: DataRepository {
+class DataRepositoryImpl @Inject constructor(): DataRepository  {
     private val fbRef = Firebase.database.reference
     private val fbCatPath = "RealmCategories"
     private val fbEventPath = "RealmEvents"

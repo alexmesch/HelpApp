@@ -13,8 +13,6 @@ import com.msch.helpapp.views.UserView
 import com.msch.helpapp.adapters.FriendsAdapter
 import com.msch.helpapp.dagger.components.ActivityComponent
 import com.msch.helpapp.dagger.components.DaggerFragmentComponent
-import com.msch.helpapp.dagger.modules.InteractorModule
-import com.msch.helpapp.dagger.modules.NetworkModule
 import kotlinx.android.synthetic.main.fragment_profile_screen.*
 import kotlinx.android.synthetic.main.fragment_profile_screen.view.*
 import moxy.presenter.InjectPresenter
@@ -32,7 +30,6 @@ class ProfileFragment : BaseFragment(), UserView {
         if (!::userPresenter.isInitialized)
             DaggerFragmentComponent.builder()
                 .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
-                .networkModule(NetworkModule())
                 .interactorModule(InteractorModule())
                 .build()
                 .inject(this)

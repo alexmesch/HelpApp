@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.multidex.MultiDex
 import com.msch.helpapp.dagger.components.ApplicationComponent
 import com.msch.helpapp.dagger.components.DaggerApplicationComponent
-import com.msch.helpapp.dagger.modules.DataModule
 
 class AndroidApplication: Application() {
     private var appComponent: ApplicationComponent? = null
@@ -19,7 +18,6 @@ class AndroidApplication: Application() {
         this.appComponent =
             DaggerApplicationComponent
                 .builder()
-                .dataModule(DataModule())
                 .build()
     }
 

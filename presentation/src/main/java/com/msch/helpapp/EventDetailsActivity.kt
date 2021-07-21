@@ -29,7 +29,7 @@ class EventDetailsActivity : BaseActivity(), EventDetailsView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!::edPresenter.isInitialized) {
-            this.initializeInjector()
+            activityComponent = initializeInjector()
             activityComponent?.inject(this)
         }
         super.onCreate(savedInstanceState)
@@ -67,12 +67,5 @@ class EventDetailsActivity : BaseActivity(), EventDetailsView {
         this.ed_friends_recycler.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         this.ed_friends_recycler.adapter = friendsAdapter
         event[eventPosition].eventFriends?.let { friendsAdapter.submitList(it) }
-    }
-
-    private fun initializeInjector() {
-        activityComponent = DaggerActivityComponent.builder()
-            .applicationComponent(getApplicationComponent())
-            .navigationModule(NavigationModule())
-            .build()
     }
 }

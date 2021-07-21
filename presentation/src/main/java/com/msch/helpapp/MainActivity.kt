@@ -5,9 +5,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.msch.helpapp.dagger.HasComponent
 import com.msch.helpapp.dagger.components.ActivityComponent
-import com.msch.helpapp.dagger.components.DaggerActivityComponent
 import com.msch.helpapp.dagger.components.FragmentComponent
-import com.msch.helpapp.dagger.modules.NavigationModule
 import com.msch.helpapp.fragments.*
 import com.msch.helpapp.presenters.MainViewPresenter
 import com.msch.helpapp.views.FragmentView
@@ -27,7 +25,7 @@ class MainActivity : BaseActivity(), FragmentView, HasComponent<FragmentComponen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!::mainViewPresenter.isInitialized) {
-            this.initializeInjector()
+            activityComponent = initializeInjector()
             activityComponent?.inject(this)
         }
         super.onCreate(savedInstanceState)
@@ -67,13 +65,6 @@ class MainActivity : BaseActivity(), FragmentView, HasComponent<FragmentComponen
                 else -> null
             } != null
         }
-
-    private fun initializeInjector() {
-        activityComponent = DaggerActivityComponent.builder()
-            .applicationComponent(getApplicationComponent())
-            .navigationModule(NavigationModule())
-            .build()
-    }
 
     override fun getComponent(): ActivityComponent? {
         return this.activityComponent
