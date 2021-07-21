@@ -30,7 +30,6 @@ class ProfileFragment : BaseFragment(), UserView {
         if (!::userPresenter.isInitialized)
             DaggerFragmentComponent.builder()
                 .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
-                .interactorModule(InteractorModule())
                 .build()
                 .inject(this)
         super.onCreate(savedInstanceState)

@@ -32,7 +32,6 @@ class HelpFragment: BaseFragment(), HelpView {
         if (!::helpPresenter.isInitialized) {
             DaggerFragmentComponent.builder()
                 .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
-                .interactorModule(InteractorModule())
                 .build()
                 .inject(this)
         }

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.AuthResult
 import com.msch.data.network.FirebaseOps
-import com.msch.helpapp.fragments.FragmentsManager
+import com.msch.helpapp.fragments.Router
 import com.msch.helpapp.views.AuthView
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @InjectViewState
 class AuthPresenter
 @Inject constructor(
-    private var fragmentManager: FragmentsManager,
+    private var fragmentManager: Router,
     private var fbOps: FirebaseOps
 ) : MvpPresenter<AuthView>() {
 

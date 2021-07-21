@@ -29,7 +29,6 @@ class AuthFragment : BaseFragment(), AuthView {
         if (!::authPresenter.isInitialized)
             DaggerFragmentComponent.builder()
                 .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
-                .interactorModule(InteractorModule())
                 .build()
                 .inject(this)
         super.onCreate(savedInstanceState)

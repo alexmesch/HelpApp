@@ -34,7 +34,6 @@ class NewsFragment : BaseFragment(), NewsView {
         if (!::newsPresenter.isInitialized) {
             DaggerFragmentComponent.builder()
                 .activityComponent(this.getActivityComponent(ActivityComponent::class.java))
-                .interactorModule(InteractorModule())
                 .build()
                 .inject(this)
         }

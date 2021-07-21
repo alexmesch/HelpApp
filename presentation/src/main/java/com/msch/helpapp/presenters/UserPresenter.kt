@@ -7,7 +7,7 @@ import com.msch.domain.interactor.GetUsersUseCase
 import com.msch.domain.model.UserProfile
 import com.msch.helpapp.views.UserView
 import com.msch.helpapp.fragments.AuthFragment
-import com.msch.helpapp.fragments.FragmentsManager
+import com.msch.helpapp.fragments.Router
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import moxy.InjectViewState
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @InjectViewState
 class UserPresenter @Inject constructor(
-    private var fragmentManager: FragmentsManager,
+    private var fragmentManager: Router,
     private var ud: GetUsersUseCase
 ) : MvpPresenter<UserView>() {
 
