@@ -1,7 +1,6 @@
 package com.msch.helpapp.presenters
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -16,8 +15,8 @@ class MainViewPresenter @Inject constructor(
     private var fragmentManager: Router
     )
     : MvpPresenter<FragmentView>() {
-    fun showFragment(fragment: Fragment, fm: FragmentManager) {
-        fragmentManager.openFragment(fragment, fm)
+    fun showFragment(fragment: Fragment) {
+        fragmentManager.openFragment(fragment)
         return
     }
 

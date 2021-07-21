@@ -1,6 +1,5 @@
 package com.msch.helpapp
 
-import android.os.Bundle
 import com.msch.helpapp.dagger.components.ActivityComponent
 import com.msch.helpapp.dagger.components.ApplicationComponent
 import com.msch.helpapp.dagger.components.DaggerActivityComponent

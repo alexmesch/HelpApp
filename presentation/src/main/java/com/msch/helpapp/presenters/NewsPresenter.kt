@@ -35,7 +35,7 @@ class NewsPresenter @Inject constructor(private var ed: GetEventsUseCase) :
         return ed.execute()
     }
 
-    fun displayNews(news: List<EventDetails>) {
+    private fun displayNews(news: List<EventDetails>) {
         viewState.showNews(news)
     }
 

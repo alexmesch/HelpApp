@@ -6,7 +6,7 @@ import com.msch.helpapp.R
 import javax.inject.Inject
 
 
-class Router @Inject constructor(var fm: FragmentManager){
+class Router @Inject constructor(private var fm: FragmentManager){
     fun openFragment(fragment: Fragment) {
         val transaction = fm.beginTransaction()
         transaction.replace(R.id.fragmentView, fragment)

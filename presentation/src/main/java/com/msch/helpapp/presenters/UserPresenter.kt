@@ -34,7 +34,7 @@ class UserPresenter @Inject constructor(
     fun logOut(fm: FragmentManager) {
         Firebase.auth.signOut()
         fm.popBackStack()
-        fragmentManager.openFragment(AuthFragment(), fm)
+        fragmentManager.openFragment(AuthFragment())
     }
 
     private fun displayProfile(profile: UserProfile) {

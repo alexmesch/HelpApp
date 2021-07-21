@@ -11,8 +11,6 @@ import com.msch.data.repository.datasource.TimeWorks.calculateEstimatedTime
 import com.msch.helpapp.adapters.EdFriendsAdapter
 import com.msch.helpapp.adapters.EdImagesAdapter
 import com.msch.helpapp.dagger.components.ActivityComponent
-import com.msch.helpapp.dagger.components.DaggerActivityComponent
-import com.msch.helpapp.dagger.modules.NavigationModule
 import com.msch.helpapp.presenters.EventDetailsPresenter
 import com.msch.helpapp.views.EventDetailsView
 import kotlinx.android.synthetic.main.ac_event_details.*

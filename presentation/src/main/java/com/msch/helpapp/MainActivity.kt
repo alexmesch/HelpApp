@@ -32,7 +32,7 @@ class MainActivity : BaseActivity(), FragmentView, HasComponent<FragmentComponen
         setContentView(R.layout.ac_main_screen)
         bottomNavigationView.setOnItemSelectedListener(mOnNavigationItemSelectedListener)
         auth = mainViewPresenter.fbAuth()
-        mainViewPresenter.showFragment(HelpFragment(), this.supportFragmentManager)
+        mainViewPresenter.showFragment(HelpFragment())
     }
 
     private val mOnNavigationItemSelectedListener =
@@ -40,26 +40,16 @@ class MainActivity : BaseActivity(), FragmentView, HasComponent<FragmentComponen
             when (item.itemId) {
                 R.id.news_button -> mainViewPresenter.showFragment(
                     NewsFragment(),
-                    this.supportFragmentManager
                 )
-                R.id.search_button -> mainViewPresenter.showFragment(
-                    SearchFragment(),
-                    this.supportFragmentManager
-                )
+                R.id.search_button -> mainViewPresenter.showFragment(SearchFragment())
                 R.id.profile_button -> {
                     if (auth.currentUser != null) {
-                        mainViewPresenter.showFragment(
-                            ProfileFragment(),
-                            this.supportFragmentManager
-                        )
+                        mainViewPresenter.showFragment(ProfileFragment())
                     } else {
-                        mainViewPresenter.showFragment(AuthFragment(), this.supportFragmentManager)
+                        mainViewPresenter.showFragment(AuthFragment())
                     }
                 }
-                R.id.help_ghost_button -> mainViewPresenter.showFragment(
-                    HelpFragment(),
-                    this.supportFragmentManager
-                )
+                R.id.help_ghost_button -> mainViewPresenter.showFragment(HelpFragment())
                 R.id.history_button -> {
                 }
                 else -> null

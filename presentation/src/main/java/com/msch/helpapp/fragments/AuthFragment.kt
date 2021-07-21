@@ -71,7 +71,7 @@ class AuthFragment : BaseFragment(), AuthView {
     override fun showProfile(authResult: Boolean, fm: FragmentManager) {
         if (authResult) {
             fm.popBackStack()
-            authPresenter.showFragment(ProfileFragment(), fm)
+            authPresenter.showFragment(ProfileFragment())
         } else {
             Toast.makeText(
                 activity?.applicationContext,

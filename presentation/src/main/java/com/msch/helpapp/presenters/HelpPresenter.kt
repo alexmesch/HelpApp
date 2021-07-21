@@ -1,6 +1,5 @@
 package com.msch.helpapp.presenters
 
-import android.annotation.SuppressLint
 import com.msch.domain.interactor.GetCategoryItemsUseCase
 import com.msch.domain.model.CategoryItems
 import com.msch.helpapp.views.HelpView

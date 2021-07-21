@@ -26,8 +26,8 @@ class AuthPresenter
         return
     }
 
-    fun showFragment(fragment: Fragment, fm: FragmentManager) {
-        fragmentManager.openFragment(fragment, fm )
+    fun showFragment(fragment: Fragment) {
+        fragmentManager.openFragment(fragment)
         return
     }
 

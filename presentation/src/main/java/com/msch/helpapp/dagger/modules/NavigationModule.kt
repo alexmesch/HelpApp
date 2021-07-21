@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class NavigationModule (var fm: FragmentManager){
+class NavigationModule (private var fm: FragmentManager){
     @PerActivity
     @Provides
     fun getFragmentsManager(): Router = Router(fm)
