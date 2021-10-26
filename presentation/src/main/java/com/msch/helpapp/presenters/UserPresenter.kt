@@ -3,6 +3,7 @@ package com.msch.helpapp.presenters
 import androidx.fragment.app.FragmentManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.msch.data.network.FirebaseOps
 import com.msch.domain.interactor.GetUsersUseCase
 import com.msch.domain.model.UserProfile
 import com.msch.helpapp.views.UserView
@@ -16,8 +17,9 @@ import javax.inject.Inject
 
 @InjectViewState
 class UserPresenter @Inject constructor(
-    private var fragmentManager: Router,
-    private var ud: GetUsersUseCase
+    private val router: Router,
+    private val usersUseCase: GetUsersUseCase,
+    private val firebaseOps: FirebaseOps
 ) : MvpPresenter<UserView>() {
 
     private var disposables = CompositeDisposable()
@@ -31,10 +33,10 @@ class UserPresenter @Inject constructor(
             .let {disposables.add(it)}
     }
 
-    fun logOut(fm: FragmentManager) {
-        Firebase.auth.signOut()
-        fm.popBackStack()
-        fragmentManager.openFragment(AuthFragment())
+    fun logOut() {
+        firebaseOps.signOut()
+        router.popBackStack()
+        router.openFragment(AuthFragment())
     }
 
     private fun displayProfile(profile: UserProfile) {
@@ -43,7 +45,7 @@ class UserPresenter @Inject constructor(
     }
 
     private fun getUserSingle(): Single<UserProfile> {
-        return ud.execute(Firebase.auth.currentUser!!.uid)
+        return usersUseCase.execute(Firebase.auth.currentUser!!.uid)
     }
 
     override fun onDestroy() {

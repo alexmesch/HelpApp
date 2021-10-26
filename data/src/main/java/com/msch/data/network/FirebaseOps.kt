@@ -1,6 +1,7 @@
 package com.msch.data.network
 
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import durdinapps.rxfirebase2.RxFirebaseAuth
@@ -9,6 +10,14 @@ import javax.inject.Inject
 
 
 class FirebaseOps @Inject constructor() {
+    fun auth(): FirebaseAuth {
+        return Firebase.auth
+    }
+
+    fun signOut() {
+        Firebase.auth.signOut()
+    }
+
     fun getLoginSingle(email: String, password: String): Single<AuthResult> {
         return RxFirebaseAuth.signInWithEmailAndPassword(Firebase.auth, email, password)
             .toSingle()

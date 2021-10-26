@@ -8,6 +8,7 @@ import dagger.Component
 @Component(dependencies = [ActivityComponent::class])
 interface FragmentComponent{
 
+    fun inject(f: EventsSearchFragment)
     fun inject(f: HelpFragment)
     fun inject(f: AuthFragment)
     fun inject(f: NewsFragment)

@@ -43,7 +43,7 @@ class ProfileFragment : BaseFragment(), UserView {
         val view = inflater.inflate(R.layout.fragment_profile_screen, container, false)
         userPresenter.showProfile()
         view.pf_loading_screen.visibility = GONE
-        view.pf_logout_button.setOnClickListener{ (userPresenter.logOut(requireActivity().supportFragmentManager))}
+        view.pf_logout_button.setOnClickListener{ (userPresenter.logOut())}
         return view
     }
 

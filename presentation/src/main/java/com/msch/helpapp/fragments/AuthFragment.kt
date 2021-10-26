@@ -45,15 +45,16 @@ class AuthFragment : BaseFragment(), AuthView {
         val loginListener = OnClickListener {
             val email = view.findViewById<EditText>(R.id.email_field).text.toString()
             val password = view.findViewById<EditText>(R.id.password_field).text.toString()
+            //Добавить обработку ошибки логина
             authPresenter.login(email, password, fm)
-            view.af_loadingScreen.visibility = GONE
+            //view.af_loadingScreen.visibility = GONE
         }
 
         val regListener = OnClickListener {
             val email = view.findViewById<EditText>(R.id.email_field).text.toString()
             val password = view.findViewById<EditText>(R.id.password_field).text.toString()
             authPresenter.register(email, password, fm)
-            view.af_loadingScreen.visibility = GONE
+            //view.af_loadingScreen.visibility = GONE
         }
 
         view.login_btn.setOnClickListener(loginListener)

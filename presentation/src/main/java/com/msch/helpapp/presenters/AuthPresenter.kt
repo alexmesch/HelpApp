@@ -15,7 +15,7 @@ import javax.inject.Inject
 @InjectViewState
 class AuthPresenter
 @Inject constructor(
-    private var fragmentManager: Router,
+    private var router: Router,
     private var fbOps: FirebaseOps
 ) : MvpPresenter<AuthView>() {
 
@@ -23,12 +23,10 @@ class AuthPresenter
 
     private fun displayProfile(authResult: Boolean, fm: FragmentManager) {
         viewState.showProfile(authResult, fm)
-        return
     }
 
     fun showFragment(fragment: Fragment) {
-        fragmentManager.openFragment(fragment)
-        return
+        router.openFragment(fragment)
     }
 
     fun login(email: String, password: String, fragmentManager: FragmentManager) {
@@ -40,7 +38,7 @@ class AuthPresenter
             }
         }, {
             Log.e("afObserver", "subscription fail")
-            it.stackTrace
+            it.printStackTrace()
         })
             .let { disposables.add(it) }
     }
@@ -53,8 +51,8 @@ class AuthPresenter
                 displayProfile(false, fragmentManager)
             }
         }, {
-            Log.e("afObserver", "subscription fail")
-            it.stackTrace
+            Log.e("apObserver", "subscription fail")
+            it.printStackTrace()
         })
             .let { disposables.add(it) }
     }

@@ -37,7 +37,7 @@ class EventDetailsActivity : BaseActivity(), EventDetailsView {
 
         view.findViewById<Button>(R.id.ed_back_btn).setOnClickListener{finishActivity(view)}
 
-        edPresenter.showEvents()
+        edPresenter.loadEvents()
         view.findViewById<FrameLayout>(R.id.ed_loadingScreen).visibility = GONE
     }
 

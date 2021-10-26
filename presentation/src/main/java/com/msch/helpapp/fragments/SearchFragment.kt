@@ -9,7 +9,7 @@ import com.msch.helpapp.R
 import com.msch.helpapp.adapters.SearchPagerAdapter
 import kotlinx.android.synthetic.main.fragment_search_screen.*
 
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

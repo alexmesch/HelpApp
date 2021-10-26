@@ -1,5 +1,6 @@
 package com.msch.helpapp.presenters
 
+import android.util.Log
 import com.msch.domain.interactor.GetEventsUseCase
 import com.msch.domain.model.EventDetails
 import com.msch.helpapp.views.EventDetailsView
@@ -11,26 +12,26 @@ import javax.inject.Inject
 
 @InjectViewState
 class EventDetailsPresenter
-@Inject constructor(private val ed: GetEventsUseCase) :
+@Inject constructor(private val eventsUseCase: GetEventsUseCase) :
     MvpPresenter<EventDetailsView>() {
     private var disposables = CompositeDisposable()
 
     private fun displayEvents(events: List<EventDetails>) {
         viewState.displayEvents(events)
-        return
     }
 
-    fun showEvents() {
+    fun loadEvents() {
         getEventsSingle().subscribe({
             displayEvents(it)
         }, {
-            it.stackTrace
+            Log.e("epfObserver", "subscription fail!")
+            it.printStackTrace()
         })
             .let { disposables.add(it) }
     }
 
     private fun getEventsSingle(): Single<List<EventDetails>> {
-        return ed.execute()
+        return eventsUseCase.execute()
     }
 
     override fun onDestroy() {

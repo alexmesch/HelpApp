@@ -2,8 +2,7 @@ package com.msch.helpapp.presenters
 
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.msch.data.network.FirebaseOps
 import com.msch.helpapp.fragments.Router
 import com.msch.helpapp.views.FragmentView
 import moxy.InjectViewState
@@ -12,15 +11,16 @@ import javax.inject.Inject
 
 @InjectViewState
 class MainViewPresenter @Inject constructor(
-    private var fragmentManager: Router
+    private val router: Router,
+    private val firebaseOps: FirebaseOps
     )
     : MvpPresenter<FragmentView>() {
+
     fun showFragment(fragment: Fragment) {
-        fragmentManager.openFragment(fragment)
-        return
+        router.openFragment(fragment)
     }
 
     fun fbAuth(): FirebaseAuth {
-        return Firebase.auth
+        return firebaseOps.auth()
     }
 }

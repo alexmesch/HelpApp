@@ -24,6 +24,7 @@ class DataRepositoryImpl @Inject constructor(): DataRepository  {
             fbRef.child(fbCatPath),
             DataSnapshotMapper.listOf(CategoryItems::class.java)
         )
+            .defaultIfEmpty(ArrayList())
             .toSingle()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -34,6 +35,7 @@ class DataRepositoryImpl @Inject constructor(): DataRepository  {
             fbRef.child(fbEventPath),
             DataSnapshotMapper.listOf(EventDetails::class.java)
         )
+            .defaultIfEmpty(ArrayList())
             .toSingle()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -41,7 +43,10 @@ class DataRepositoryImpl @Inject constructor(): DataRepository  {
 
     override fun getUserSingle(userID: String): Single<UserProfile> {
         return RxFirebaseDatabase.observeSingleValueEvent(
-            fbRef.child(fbUsersPath).child(userID), DataSnapshotMapper.of(UserProfile::class.java))
+            fbRef.child(fbUsersPath).child(userID),
+            DataSnapshotMapper.of(UserProfile::class.java)
+        )
+            .defaultIfEmpty(UserProfile())
             .toSingle()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

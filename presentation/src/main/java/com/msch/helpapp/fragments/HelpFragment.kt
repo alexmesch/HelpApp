@@ -6,7 +6,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.msch.domain.model.CategoryItems
@@ -48,12 +47,7 @@ class HelpFragment: BaseFragment(), HelpView {
             override fun onItemClicked(position: Int, clickedId: Bundle) {
                 val newsFragment = NewsFragment()
                 newsFragment.arguments = clickedId
-
-                val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.fragmentView, newsFragment)
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                transaction.addToBackStack(null)
-                transaction.commit()
+                helpPresenter.showFragment(newsFragment)
             }
         })
 

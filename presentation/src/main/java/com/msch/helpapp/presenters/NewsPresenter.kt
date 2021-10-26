@@ -11,7 +11,7 @@ import moxy.MvpPresenter
 import javax.inject.Inject
 
 @InjectViewState
-class NewsPresenter @Inject constructor(private var ed: GetEventsUseCase) :
+class NewsPresenter @Inject constructor(private val eventsUseCase: GetEventsUseCase) :
     MvpPresenter<NewsView>() {
 
     private var disposables = CompositeDisposable()
@@ -25,14 +25,14 @@ class NewsPresenter @Inject constructor(private var ed: GetEventsUseCase) :
                 displayNews(list.filter {it.eventCategory == filter})
             }
         }, {
-            Log.e("nfObserver", "subscription fail!")
-            it.stackTrace
+            Log.e("npObserver", "subscription fail!")
+            it.printStackTrace()
         })
             .let { disposables.add(it) }
     }
 
     private fun getNewsSingle(): Single<List<EventDetails>> {
-        return ed.execute()
+        return eventsUseCase.execute()
     }
 
     private fun displayNews(news: List<EventDetails>) {
